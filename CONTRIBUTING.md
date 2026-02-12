@@ -13,7 +13,7 @@
 
 ### Reportar Bugs 🐛
 
-Si encuentras un bug, crea un [Issue](../../issues) incluyendo:
+Si encuentras un bug, crea un [Issue](https://github.com/ignacio1123/parches-y-costura/issues) incluyendo:
 
 - **Título claro** del problema
 - **Descripción detallada** del bug

@@ -10,7 +10,7 @@
 
 *Sistema moderno y completo para gestionar pedidos de parches y costuras*
 
-[Demo](#demo) • [Características](#características) • [Instalación](#instalación) • [Uso](#uso) • [Contribuir](#contribuir)
+[🚀 Ver Demo](https://ignacio1123.github.io/parches-y-costura) • [Características](#características) • [Instalación](#instalación) • [Uso](#uso) • [Contribuir](#contribuir)
 
 </div>
 
@@ -83,7 +83,7 @@
 
 ```bash
 # Clona el repositorio
-git clone https://github.com/tu-usuario/parches-y-costura.git
+git clone https://github.com/ignacio1123/parches-y-costura.git
 
 # Entra al directorio
 cd parches-y-costura
@@ -111,10 +111,9 @@ live-server
 
 ### Opción 3: GitHub Pages (Hosting Gratuito)
 
-1. Haz fork de este repositorio
-2. Ve a **Settings** → **Pages**
-3. Selecciona la rama `main` y carpeta `/ (root)`
-4. Tu app estará disponible en `https://tu-usuario.github.io/parches-y-costura`
+1. Ve a **Settings** → **Pages** en tu repositorio
+2. Selecciona la rama `main` y carpeta `/ (root)`
+3. Tu app estará disponible en `https://ignacio1123.github.io/parches-y-costura`
 
 ---
 
@@ -305,9 +304,9 @@ copies of the Software...
 
 ## 👨‍💻 Autor
 
-**Nacho**  
-- 📧 Email: [tu-email@ejemplo.com](mailto:tu-email@ejemplo.com)
-- 💼 GitHub: [@tu-usuario](https://github.com/tu-usuario)
+**Ignacio**  
+- 💼 GitHub: [@ignacio1123](https://github.com/ignacio1123)
+- 🔗 Proyecto: [Parches y Costura](https://github.com/ignacio1123/parches-y-costura)
 
 ---
 
@@ -325,16 +324,15 @@ copies of the Software...
 Si tienes preguntas o necesitas ayuda:
 
 1. 📖 Lee las [Instrucciones para Usuarios](INSTRUCCIONES_PARA_TUS_TIOS.txt)
-2. 🐛 Reporta bugs en [GitHub Issues](../../issues)
-3. 💬 Discusiones en [GitHub Discussions](../../discussions)
-4. 📧 Contacto directo: [tu-email@ejemplo.com](mailto:tu-email@ejemplo.com)
+2. 🐛 Reporta bugs en [GitHub Issues](https://github.com/ignacio1123/parches-y-costura/issues)
+3. 💬 Discusiones en [GitHub Discussions](https://github.com/ignacio1123/parches-y-costura/discussions)
 
 ---
 
 <div align="center">
 
-Hecho con ❤️ por Nacho
+Hecho con ❤️ por [Ignacio](https://github.com/ignacio1123)
 
-⭐ Si este proyecto te fue útil, considera darle una estrella en GitHub
+⭐ Si este proyecto te fue útil, [dale una estrella en GitHub](https://github.com/ignacio1123/parches-y-costura)
 
 </div>
