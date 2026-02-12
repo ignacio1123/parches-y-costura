@@ -10,7 +10,7 @@
 
 *Sistema moderno y completo para gestionar pedidos de parches y costuras*
 
-[🚀 Ver Demo](https://ignacio1123.github.io/parches-y-costura) • [Características](#características) • [Instalación](#instalación) • [Uso](#uso) • [Contribuir](#contribuir)
+[🚀 Ver Demo](https://ignacio1123.github.io/parches-y-costura/) • [Características](#características) • [Instalación](#instalación) • [Uso](#uso) • [Contribuir](#contribuir)
 
 </div>
 
@@ -20,7 +20,23 @@
 
 **Parches y Costura** es una aplicación web completa diseñada para gestionar pedidos de parches personalizados. Permite llevar un control detallado de clientes, pedidos, estados, inventario y generar reportes en PDF. Todo funciona 100% en el navegador, sin necesidad de servidor ni base de datos externa.
 
-### 🎯 Características Principales
+## 🖼️ Preview
+
+<div align="center">
+
+### 💻 Vista de Escritorio
+> Dashboard completo con todas las funcionalidades visible en pantallas grandes
+
+### 📱 Vista Móvil  
+> Menú hamburguesa y diseño adaptativo optimizado para smartphones
+
+[**👉 Pruébalo en vivo**](https://ignacio1123.github.io/parches-y-costura/)
+
+</div>
+
+---
+
+## 🎯 Características Principales
 
 #### ✨ Gestión Integral de Pedidos
 - **Registro completo** de pedidos con múltiples campos (cliente, rango, región, cantidad, precio, descuento, estado)
@@ -90,13 +106,13 @@ cd parches-y-costura
 
 # Abre el archivo en tu navegador
 # Windows
-start parches.html
+start index.html
 
-# macOS
-open parches.html
+# MacOS
+open index.html
 
 # Linux
-xdg-open parches.html
+xdg-open index.html
 ```
 
 ### Opción 2: Desarrollo con Live Server
@@ -125,7 +141,7 @@ El proyecto incluye dos versiones:
 
 | Archivo | Descripción | Uso Recomendado |
 |---------|-------------|-----------------|
-| **`parches.html`** | Versión standalone (todo en un archivo) | Distribución, enviar por email, uso offline |
+| **`index.html`** | Versión standalone (todo en un archivo) | Distribución, enviar por email, uso offline |
 | **`parches-y-costura.html`** + `app.js` + `styles.css` | Versión modular (3 archivos) | Desarrollo, mantenimiento, colaboración |
 
 ### Funcionalidades Básicas
@@ -195,7 +211,7 @@ El proyecto incluye dos versiones:
 ```
 parches-y-costura/
 │
-├── parches.html                      # Versión completa standalone
+├── index.html                        # Versión completa standalone
 ├── parches-y-costura.html            # Versión modular (HTML)
 ├── app.js                            # Lógica de la aplicación
 ├── styles.css                        # Estilos globales
