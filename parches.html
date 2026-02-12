@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Parches y Costura</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+		rel="stylesheet"
+	/>
+	<style>
+		:root {
+			color-scheme: light;
+			--bg: #fafafa;
+			--panel: #ffffff;
+			--ink: #1a1a1a;
+			--muted: #737373;
+			--line: #e5e5e5;
+			--primary: #2563eb;
+			--primary-strong: #1d4ed8;
+			--shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+			--radius: 8px;
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			font-family: "Space Grotesk", sans-serif;
+		}
+
+		body {
+			background: var(--bg);
+			color: var(--ink);
+			overflow-x: hidden;
+		}
+
+		body.modal-open {
+			overflow: hidden;
+		}
+
+		.page {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 32px 24px 60px;
+		}
+
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 32px;
+		}
+
+		.eyebrow {
+			text-transform: uppercase;
+			letter-spacing: 0.1em;
+			font-size: 11px;
+			font-weight: 500;
+			color: var(--muted);
+			margin-bottom: 4px;
+		}
+
+		.top-actions {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+
+		.top-actions .select-formato {
+			min-width: 160px;
+		}
+
+		@media (max-width: 900px) {
+			/* Ocultar tooltips en pantallas pequeñas */
+			[data-tooltip]:hover::before,
+			[data-tooltip]:hover::after {
+				display: none !important;
+			}
+
+			.top-actions {
+				width: 100%;
+			}
+			
+			.top-actions .select-formato {
+				flex: 1;
+				min-width: min(180px, 100%);
+			}
+		}
+
+		h1 {
+			font-size: 28px;
+			font-weight: 600;
+			color: var(--ink);
+		}
+
+		.cards {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 16px;
+			margin-bottom: 24px;
+		}
+
+		.card {
+			background: var(--panel);
+			border-radius: var(--radius);
+			padding: 20px;
+			border: 1px solid var(--line);
+			transition: border-color 0.2s ease;
+		}
+
+		.card:hover {
+			border-color: var(--muted);
+		}
+
+		.card p {
+			color: var(--muted);
+			margin-bottom: 8px;
+			font-size: 13px;
+			font-weight: 500;
+		}
+
+		.card h2 {
+			font-size: 26px;
+			font-weight: 600;
+		}
+
+		.tone-blue {
+			border-left: 3px solid #3b82f6;
+		}
+
+		.tone-mint {
+			border-left: 3px solid #14b8a6;
+		}
+
+		.tone-amber {
+			border-left: 3px solid #f59e0b;
+		}
+
+		.tone-emerald {
+			border-left: 3px solid #10b981;
+		}
+
+		.table-block {
+			background: var(--panel);
+			border-radius: var(--radius);
+			padding: 24px;
+			border: 1px solid var(--line);
+		}
+
+		.section-head {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+			gap: 16px;
+			flex-wrap: wrap;
+		}
+
+		.section-head h2 {
+			font-size: 20px;
+			font-weight: 600;
+			margin: 0;
+			flex-shrink: 0;
+		}
+
+		.search-actions {
+			display: flex;
+			gap: 8px;
+			flex: 1;
+			min-width: min(300px, 100%);
+			justify-content: flex-end;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.search-input {
+			flex: 1;
+			min-width: min(160px, 100%);
+			max-width: 220px;
+			padding: 6px 12px;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			font-size: 13px;
+			transition: border-color 0.15s ease;
+		}
+
+		.search-input:focus {
+			outline: none;
+			border-color: var(--primary);
+		}
+
+		.search-input::placeholder {
+			color: var(--muted);
+		}
+
+		.select-formato {
+			padding: 8px 14px;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			font-size: 14px;
+			background-color: white;
+			color: var(--text);
+			cursor: pointer;
+			transition: border-color 0.15s ease;
+			font-family: inherit;
+		}
+
+		.select-formato:hover {
+			border-color: var(--primary);
+		}
+
+		.select-formato:focus {
+			outline: none;
+			border-color: var(--primary);
+		}
+
+		.select-formato-table {
+			padding: 6px 10px;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			font-size: 12px;
+			background-color: white;
+			color: var(--text);
+			cursor: pointer;
+			transition: border-color 0.15s ease;
+			font-family: inherit;
+			min-width: 120px;
+		}
+
+		.select-formato-table:hover {
+			border-color: var(--primary);
+		}
+
+		.select-formato-table:focus {
+			outline: none;
+			border-color: var(--primary);
+		}
+
+		@media (max-width: 768px) {
+			/* Ocultar tooltips en móvil para evitar que rompan el layout */
+			[data-tooltip]:hover::before,
+			[data-tooltip]:hover::after {
+				display: none !important;
+			}
+
+			.section-head {
+				flex-direction: column;
+				align-items: stretch;
+			}
+			
+			.search-actions {
+				width: 100%;
+				min-width: 100%;
+				gap: 6px;
+				flex-wrap: wrap;
+			}
+			
+			.search-input {
+				max-width: 100%;
+				flex: 1;
+				min-width: 100%;
+				margin-bottom: 6px;
+			}
+			
+			.select-formato-table {
+				flex: 0 1 auto;
+				min-width: 110px;
+				padding: 5px 8px;
+				font-size: 11px;
+			}
+			
+			.btn {
+				flex: 0 1 auto;
+				padding: 6px 8px;
+				font-size: 11px;
+			}
+			
+			.btn-primary {
+				min-width: auto;
+			}
+		}
+
+		/* Menu desplegable para móvil */
+		.actions-menu {
+			position: relative;
+			display: inline-block;
+		}
+
+		.menu-btn {
+			background: var(--surface) !important;
+			border: 1px solid var(--line) !important;
+			padding: 6px 10px !important;
+			font-size: 18px !important;
+			color: var(--text) !important;
+			cursor: pointer;
+			border-radius: var(--radius) !important;
+			min-width: auto !important;
+			transition: all 0.2s ease;
+		}
+
+		.menu-btn:hover {
+			background: var(--primary-light) !important;
+			border-color: var(--primary) !important;
+			color: var(--primary) !important;
+		}
+
+		.menu-dropdown {
+			position: absolute;
+			top: calc(100% + 5px);
+			right: 0;
+			background: white;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			min-width: 200px;
+			z-index: 1000;
+			display: none;
+			overflow: hidden;
+		}
+
+		.menu-dropdown.active {
+			display: block;
+		}
+
+		.menu-item {
+			display: block;
+			width: 100%;
+			padding: 10px 16px;
+			border: none;
+			background: white;
+			color: var(--text);
+			text-align: left;
+			cursor: pointer;
+			font-size: 13px;
+			font-family: inherit;
+			transition: background-color 0.15s ease;
+		}
+
+		.menu-item:hover {
+			background-color: var(--primary-light);
+			color: var(--primary);
+		}
+
+		.btn-primary-text {
+			color: var(--primary);
+			font-weight: 600;
+		}
+
+		.btn-primary-text:hover {
+			background-color: var(--primary-light);
+			color: var(--primary);
+		}
+
+		@media (min-width: 769px) {
+			/* En desktop: mostrar menu en línea */
+			.actions-menu {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+			}
+			
+			#menuBtn {
+				display: none !important;
+			}
+			
+			.menu-dropdown {
+				position: static !important;
+				box-shadow: none !important;
+				border: none !important;
+				background: transparent !important;
+				display: flex !important;
+				flex-direction: row;
+				gap: 4px;
+				min-width: auto;
+				min-height: auto;
+				padding: 0;
+			}
+			
+			.menu-item {
+				display: inline-flex;
+				width: auto;
+				padding: 6px 10px;
+				font-size: 11px;
+				background: var(--surface) !important;
+				border: 1px solid var(--line) !important;
+				border-radius: var(--radius) !important;
+				color: var(--text) !important;
+				text-align: center;
+				white-space: nowrap;
+			}
+			
+			.menu-item:hover {
+				background: var(--primary-light) !important;
+				border-color: var(--primary) !important;
+				color: var(--primary) !important;
+			}
+			
+			.btn-primary-text {
+				background: var(--primary) !important;
+				color: white !important;
+				border-color: var(--primary) !important;
+			}
+			
+			.btn-primary-text:hover {
+				background: var(--primary) !important;
+				opacity: 0.9;
+			}
+		}
+
+		.table-wrap {
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			display: block;
+		}
+
+		.pagination {
+			display: none;
+			justify-content: flex-end;
+			align-items: center;
+			gap: 6px;
+			margin-top: 12px;
+			flex-wrap: wrap;
+		}
+
+		.pagination.visible {
+			display: flex;
+		}
+
+		.page-btn {
+			padding: 6px 10px;
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: white;
+			font-size: 12px;
+			color: var(--ink);
+			cursor: pointer;
+			transition: border-color 0.15s ease, background-color 0.15s ease;
+		}
+
+		.page-btn:hover:not(:disabled) {
+			border-color: var(--primary);
+			background: #f8fafc;
+		}
+
+		.page-btn.active {
+			border-color: var(--primary);
+			background: #eef2ff;
+			color: var(--primary);
+			font-weight: 600;
+		}
+
+		.page-btn:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		.page-ellipsis {
+			font-size: 12px;
+			color: var(--muted);
+			padding: 0 4px;
+		}
+
+		.page-info {
+			font-size: 12px;
+			color: var(--muted);
+			margin-left: 6px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			table-layout: auto;
+		}
+
+		th,
+		td {
+			text-align: left;
+			padding: 10px 8px;
+			border-bottom: 1px solid var(--line);
+			font-size: 13px;
+			vertical-align: top;
+			word-break: break-word;
+			white-space: nowrap;
+		}
+
+		th:nth-child(1), td:nth-child(1) { width: 40px; text-align: center; }
+		th:nth-child(2), td:nth-child(2) { width: 90px; }
+		th:nth-child(3), td:nth-child(3) { width: auto; min-width: 100px; }
+		th:nth-child(4), td:nth-child(4) { width: 80px; }
+		th:nth-child(5), td:nth-child(5) { width: 100px; }
+		th:nth-child(6), td:nth-child(6) { width: auto; min-width: 120px; }
+		th:nth-child(7), td:nth-child(7) { width: 70px; text-align: center; }
+		th:nth-child(8), td:nth-child(8) { width: 85px; }
+		th:nth-child(9), td:nth-child(9) { width: 75px; text-align: center; }
+		th:nth-child(10), td:nth-child(10) { width: 95px; }
+		th:nth-child(11), td:nth-child(11) { width: 90px; }
+		th:nth-child(12), td:nth-child(12) { width: 170px; }
+
+		th {
+			font-size: 11px;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+			color: var(--muted);
+			font-weight: 600;
+		}
+
+		tbody tr:hover {
+			background: #f9fafb;
+		}
+
+		.badge {
+			padding: 4px 10px;
+			border-radius: 6px;
+			font-size: 11px;
+			font-weight: 500;
+			display: inline-block;
+		}
+
+		.badge.confirmado {
+			background: #dbeafe;
+			color: #1e40af;
+		}
+
+		.badge.pendiente {
+			background: #fef3c7;
+			color: #92400e;
+		}
+
+		.badge.en-curso {
+			background: #fef3c7;
+			color: #92400e;
+		}
+
+		.badge.entregado {
+			background: #d1fae5;
+			color: #065f46;
+		}
+
+		.actions {
+			display: flex;
+			gap: 2px;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+		}
+
+		.actions-cell {
+			white-space: normal;
+		}
+
+		.btn {
+			border: none;
+			padding: 9px 16px;
+			border-radius: var(--radius);
+			font-weight: 500;
+			font-size: 14px;
+			cursor: pointer;
+			white-space: nowrap;
+			transition: all 0.15s ease;
+		}
+
+		.btn:hover {
+			opacity: 0.9;
+		}
+
+		.btn-primary {
+			background: var(--primary);
+			color: #fff;
+		}
+
+		.btn-primary:hover {
+			background: var(--primary-strong);
+		}
+
+		.btn-secondary {
+			background: #f5f5f5;
+			color: var(--ink);
+			border: 1px solid var(--line);
+		}
+
+		.btn-ghost {
+			background: transparent;
+			border: 1px solid var(--line);
+			color: var(--muted);
+		}
+
+		.btn-sm {
+			padding: 6px 10px;
+			font-size: 12px;
+		}
+
+		.icon-btn {
+			border: none;
+			background: transparent;
+			font-size: 20px;
+			cursor: pointer;
+			color: var(--muted);
+			transition: color 0.15s ease;
+			padding: 4px;
+			line-height: 1;
+		}
+
+		.icon-btn:hover {
+			color: var(--ink);
+		}
+
+		[data-tooltip] {
+			position: relative;
+		}
+
+		[data-tooltip]:hover::before {
+			content: attr(data-tooltip);
+			position: absolute;
+			bottom: calc(100% + 8px);
+			left: 50%;
+			transform: translateX(-50%);
+			background: var(--ink);
+			color: #fff;
+			padding: 8px 12px;
+			border-radius: 6px;
+			font-size: 12px;
+			z-index: 1000;
+			pointer-events: none;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+			max-width: 280px;
+			white-space: normal;
+			text-align: center;
+			line-height: 1.4;
+			font-weight: 400;
+		}
+
+		[data-tooltip]:hover::after {
+			content: "";
+			position: absolute;
+			bottom: calc(100% + 2px);
+			left: 50%;
+			transform: translateX(-50%);
+			border: 5px solid transparent;
+			border-top-color: var(--ink);
+			z-index: 1001;
+			pointer-events: none;
+		}
+
+		/* Tooltips en header - aparecer abajo */
+		.top-actions [data-tooltip]:hover::before {
+			bottom: auto;
+			top: calc(100% + 8px);
+		}
+
+		.top-actions [data-tooltip]:hover::after {
+			bottom: auto;
+			top: calc(100% + 2px);
+			border-top-color: transparent;
+			border-bottom-color: var(--ink);
+		}
+
+		.modal {
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.4);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			padding: 24px;
+			z-index: 9999;
+			overflow-y: auto;
+		}
+
+		.modal.active {
+			display: flex;
+		}
+
+		.modal-card {
+			width: min(720px, 100%);
+			max-width: calc(100vw - 48px);
+			background: var(--panel);
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+			overflow: hidden;
+			max-height: 90vh;
+			display: flex;
+			flex-direction: column;
+			position: relative;
+		}
+
+		.confirm-card {
+			width: min(420px, 100%);
+			max-width: calc(100vw - 48px);
+			background: var(--panel);
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.confirm-body {
+			padding: 20px 24px;
+			font-size: 14px;
+			color: var(--ink);
+		}
+
+		.confirm-actions {
+			padding: 0 24px 20px;
+			position: static;
+			border-top: none;
+		}
+
+		.modal-content {
+			width: min(400px, 100%);
+			max-width: calc(100vw - 48px);
+			background: var(--panel);
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		}
+
+		.modal-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 16px 20px;
+			border-bottom: 1px solid var(--line);
+			background: var(--primary-light);
+		}
+
+		.modal-header h3 {
+			font-size: 16px;
+			font-weight: 600;
+			color: var(--text);
+			margin: 0;
+		}
+
+		.close-modal {
+			background: none;
+			border: none;
+			font-size: 24px;
+			color: var(--muted);
+			cursor: pointer;
+			padding: 0;
+			width: 32px;
+			height: 32px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: color 0.15s ease;
+		}
+
+		.close-modal:hover {
+			color: var(--text);
+		}
+
+		.modal-body {
+			padding: 20px 20px;
+		}
+
+		.modal-body p {
+			font-size: 14px;
+			color: var(--text);
+			margin: 0 0 12px 0;
+		}
+
+		.format-buttons {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.format-buttons .btn {
+			width: 100%;
+			padding: 10px 16px;
+			font-size: 14px;
+			border-radius: var(--radius);
+			cursor: pointer;
+			transition: all 0.15s ease;
+		}
+
+		.undo-toast {
+			position: fixed;
+			left: 50%;
+			bottom: 20px;
+			transform: translateX(-50%) translateY(20px);
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+			padding: 10px 14px;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			font-size: 13px;
+			color: var(--ink);
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.2s ease, transform 0.2s ease;
+			z-index: 10000;
+		}
+
+		.undo-toast.visible {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+			pointer-events: auto;
+		}
+
+		.modal-head {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 20px 24px;
+			border-bottom: 1px solid var(--line);
+			background: var(--panel);
+			position: sticky;
+			top: 0;
+			z-index: 2;
+		}
+
+		.modal-head h3 {
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+		.modal-form {
+			padding: 24px;
+			overflow-y: auto;
+			overflow-x: hidden;
+			flex: 1;
+			min-height: 0;
+		}
+
+		.form-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+			gap: 14px;
+		}
+
+		label {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			font-size: 12px;
+			font-weight: 500;
+			color: var(--ink);
+		}
+
+		input,
+		select,
+		textarea {
+			padding: 8px 12px;
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+			font-size: 14px;
+			transition: border-color 0.15s ease;
+			background: var(--panel);
+		}
+
+		input:focus,
+		select:focus,
+		textarea:focus {
+			outline: none;
+			border-color: var(--primary);
+		}
+
+		textarea {
+			resize: vertical;
+		}
+
+		.auto-grow {
+			overflow: hidden;
+			resize: none;
+		}
+
+		.full {
+			grid-column: 1 / -1;
+		}
+
+		.total-preview {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 16px;
+			padding: 12px 16px;
+			background: #f9fafb;
+			border-radius: var(--radius);
+			border: 1px solid var(--line);
+		}
+
+		.total-preview strong {
+			font-size: 16px;
+			font-weight: 600;
+		}
+
+		.modal-actions {
+			display: flex;
+			justify-content: flex-end;
+			gap: 8px;
+			margin-top: 20px;
+			background: var(--panel);
+			position: sticky;
+			bottom: 0;
+			padding: 16px 0 0;
+			border-top: 1px solid var(--line);
+		}
+
+		.report-modal {
+			max-width: 700px;
+			max-height: 90vh;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.report-modal-form {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			overflow-y: auto;
+			flex: 1;
+			max-height: calc(90vh - 200px);
+			padding: 20px;
+		}
+
+		.report-search-section {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.report-search-section input {
+			padding: 10px 12px;
+			border: 1px solid var(--line);
+			border-radius: var(--radius);
+			font-size: 14px;
+			font-family: "Space Grotesk", sans-serif;
+		}
+
+		.report-records-section h4 {
+			margin-bottom: 12px;
+			font-size: 14px;
+			font-weight: 600;
+			color: var(--ink);
+		}
+
+		.report-records-section {
+			border-top: 1px solid var(--line);
+			padding-top: 16px;
+		}
+
+		.report-records-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 12px;
+		}
+
+		.report-records-header h4 {
+			margin: 0;
+		}
+
+		.mark-all-label {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 13px;
+			font-weight: 500;
+			cursor: pointer;
+			padding: 6px 10px;
+			background: var(--bg);
+			border-radius: 4px;
+		}
+
+		.mark-all-label input[type="checkbox"] {
+			cursor: pointer;
+			width: 16px;
+			height: 16px;
+		}
+
+		.report-records-list {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			max-height: 300px;
+			overflow-y: auto;
+			padding: 8px;
+			background: var(--bg);
+			border-radius: var(--radius);
+		}
+
+		.report-record-item {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 8px 10px;
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: 4px;
+			font-size: 13px;
+			transition: all 0.2s ease;
+		}
+
+		.report-record-item:hover {
+			border-color: var(--primary);
+			background: #f8faff;
+		}
+
+		.report-record-item input[type="checkbox"] {
+			cursor: pointer;
+			width: 16px;
+			height: 16px;
+			flex-shrink: 0;
+		}
+
+		.report-record-item label {
+			flex: 1;
+			cursor: pointer;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.report-record-info {
+			display: flex;
+			gap: 12px;
+			font-size: 12px;
+			color: var(--muted);
+		}
+
+		.report-record-info span {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.report-record-info strong {
+			color: var(--ink);
+		}
+
+		@media (max-width: 720px) {
+			.topbar {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.modal-card {
+				width: 100%;
+				max-width: 100%;
+				margin: 0;
+			}
+			
+			.modal {
+				padding: 12px;
+			}
+			
+			.modal-form {
+				padding: 16px;
+			}
+			
+			.form-grid {
+				grid-template-columns: 1fr;
+			}
+
+			th:nth-child(1), td:nth-child(1) { width: 35px; padding: 8px 4px; }
+			th:nth-child(2), td:nth-child(2) { width: 70px; padding: 8px 4px; }
+			th:nth-child(3), td:nth-child(3) { width: 80px; padding: 8px 4px; }
+			th:nth-child(4), td:nth-child(4) { width: 60px; padding: 8px 4px; }
+			th:nth-child(5), td:nth-child(5) { width: 70px; padding: 8px 4px; }
+			th:nth-child(6), td:nth-child(6) { width: 70px; padding: 8px 4px; }
+			th:nth-child(7), td:nth-child(7) { width: 50px; padding: 8px 4px; }
+			th:nth-child(8), td:nth-child(8) { width: 65px; padding: 8px 4px; }
+			th:nth-child(9), td:nth-child(9) { width: 50px; padding: 8px 4px; }
+			th:nth-child(10), td:nth-child(10) { width: 70px; padding: 8px 4px; }
+			th:nth-child(11), td:nth-child(11) { width: 70px; padding: 8px 4px; }
+			th:nth-child(12), td:nth-child(12) { width: 120px; padding: 8px 4px; }
+
+			th {
+				font-size: 10px;
+			}
+
+			td {
+				font-size: 11px;
+			}
+
+			.btn-sm {
+				padding: 4px 6px;
+				font-size: 10px;
+			}
+
+			.badge {
+				font-size: 9px;
+				padding: 3px 8px;
+			}
+
+			.table-wrap {
+				overflow-x: auto;
+				-webkit-overflow-scrolling: touch;
+			}
+
+			.report-modal {
+				max-width: 95vw;
+				max-height: 95vh;
+			}
+
+			.report-modal-form {
+				max-height: calc(95vh - 200px);
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="page">
+		<header class="topbar">
+			<div>
+				<p class="eyebrow">Control de Parches</p>
+				<h1>Parches y Costura</h1>
+			</div>
+			<div class="top-actions">
+				<label class="btn btn-secondary" for="pdfInput" data-tooltip="Sube un PDF para importar automáticamente los datos del pedido">Cargar PDF</label>
+				<input id="pdfInput" type="file" accept="application/pdf" hidden />
+				<button id="seedOrdersBtn" class="btn btn-ghost" data-tooltip="Agrega 12 pedidos de prueba para revisar la paginacion">Agregar Pruebas</button>
+				<button id="exportBtn" class="btn btn-ghost" data-tooltip="Guarda una copia de seguridad de todos los pedidos en tu computador">Descargar Respaldo</button>
+				<label class="btn btn-ghost" for="importInput" data-tooltip="Recupera pedidos desde una copia de seguridad guardada anteriormente">Cargar Respaldo</label>
+				<input id="importInput" type="file" accept="application/json" hidden />
+			</div>
+		</header>
+
+		<section class="cards">
+			<article class="card tone-blue">
+				<p>Total pedidos</p>
+				<h2 id="totalPedidos">0</h2>
+			</article>
+			<article class="card tone-mint">
+				<p>Valor total</p>
+				<h2 id="valorTotal">$0</h2>
+			</article>
+			<article class="card tone-amber">
+				<p>Pendiente / En curso</p>
+				<h2 id="valorPendiente">$0</h2>
+			</article>
+			<article class="card tone-emerald">
+				<p>Entregado</p>
+				<h2 id="valorEntregado">$0</h2>
+			</article>
+		</section>
+
+		<section class="table-block">
+			<div class="section-head">
+				<h2>Pedidos Realizados</h2>
+				<div class="search-actions">
+					<input type="text" id="searchInput" placeholder="Buscar por cliente, fecha, región, estado, rango..." class="search-input" />
+					<div class="actions-menu">
+						<button id="menuBtn" class="btn btn-ghost menu-btn" title="Más opciones">⋮</button>
+						<div id="menuDropdown" class="menu-dropdown">
+							<button id="descargarFormatoBtn" class="menu-item">📄 Descargar Formato</button>
+							<button id="exportPdfBtn" class="menu-item">📊 Descargar Reporte</button>
+							<button id="addBtn" class="menu-item btn-primary-text">➕ Agregar Pedido</button>
+						</div>
+					</div>
+					<select id="formatoPdf" class="select-formato-table" hidden>
+						<option value="tienda">Formato Tienda</option>
+						<option value="individual">Formato Individual</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Fecha</th>
+							<th>Cliente</th>
+							<th>Rango</th>
+							<th>Region/Comuna</th>
+							<th>Enviar a</th>
+							<th>Cantidad</th>
+							<th>Unitario</th>
+							<th>Descuento</th>
+							<th>Total</th>
+							<th>Estado</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody id="ordersBody"></tbody>
+				</table>
+			</div>
+			<div id="pagination" class="pagination" aria-label="Paginacion de pedidos"></div>
+		</section>
+	</div>
+
+	<div id="modal" class="modal" aria-hidden="true">
+		<div class="modal-card" role="dialog" aria-modal="true">
+			<header class="modal-head">
+				<h3 id="modalTitle">Agregar Pedido</h3>
+				<button id="closeModal" class="icon-btn" aria-label="Cerrar">x</button>
+			</header>
+
+			<form id="orderForm" class="modal-form">
+				<input type="hidden" id="orderId" />
+
+				<div class="form-grid">
+					<label>
+						Fecha
+						<input type="date" id="fecha" required />
+					</label>
+					<label>
+						Nombre Cliente
+						<input type="text" id="cliente" required />
+					</label>
+					<label>
+						Tipo de Cliente
+						<select id="tipoCliente" required>
+							<option value="">Seleccione un tipo</option>
+							<option value="individual">Individual</option>
+							<option value="tienda">Tienda/Distribuidor</option>
+						</select>
+					</label>
+					<label id="rangoLabel" style="display: none;">
+						Rango
+						<select id="rango">
+							<option value="">Seleccione un rango</option>
+							<option value="Carabinero">Carabinero</option>
+							<option value="Cabo Segundo">Cabo Segundo</option>
+							<option value="Cabo Primero">Cabo Primero</option>
+							<option value="Cabo">Cabo</option>
+							<option value="Sargento Segundo">Sargento Segundo</option>
+							<option value="Sargento Primero">Sargento Primero</option>
+							<option value="Suboficial">Suboficial</option>
+							<option value="Suboficial Mayor">Suboficial Mayor</option>
+							<option value="Subteniente">Subteniente</option>
+							<option value="Teniente">Teniente</option>
+							<option value="Capitán">Capitán</option>
+							<option value="Mayor">Mayor</option>
+							<option value="Teniente Coronel">Teniente Coronel</option>
+							<option value="Coronel">Coronel</option>
+							<option value="General">General</option>
+						</select>
+					</label>
+					<label>
+						Region/Comuna
+						<input type="text" id="region" placeholder="Ponga Una Region/Comuna" required />
+					</label>
+				<label>
+					Enviar a
+					<textarea id="enviarA" rows="2" class="auto-grow"></textarea>
+				</label>
+				<label>
+					Facturar a
+					<textarea id="facturarA" rows="2" class="auto-grow"></textarea>
+				</label>
+				<label>
+					Distribuidor
+					<textarea id="distribuidor" rows="2" class="auto-grow"></textarea>
+				</label>
+				<label class="full">
+					Productos (PDF)
+					<textarea id="productos" rows="2" class="auto-grow"></textarea>
+					</label>
+					<label>
+						Cantidad
+						<input type="number" id="cantidad" min="1" value="1" required />
+					</label>
+					<label>
+						Valor Unitario (CLP)
+						<input type="number" id="unitario" min="0" step="1" value="0" required />
+					</label>
+					<label>
+						Descuento (%)
+						<input type="number" id="descuento" min="0" max="100" step="1" value="0" />
+					</label>
+					<label>
+						Subtotal (CLP)
+						<input type="number" id="subtotal" min="0" step="1" value="0" readonly />
+					</label>
+					<label>
+						Impuestos (CLP)
+						<input type="number" id="impuestos" min="0" step="1" value="0" />
+					</label>
+					<label>
+						Envio (CLP)
+						<input type="number" id="envio" min="0" step="1" value="0" />
+					</label>
+					<label>
+						Estado
+						<select id="estado" required>
+							<option value="Pendiente">Pendiente</option>
+							<option value="En curso">En curso</option>
+							<option value="Entregado">Entregado</option>
+							<option value="Confirmado">Confirmado</option>
+						</select>
+					</label>
+					<label>
+						Condicion de pago
+						<input type="text" id="condicionPago" value="Ninguna" readonly />
+					</label>
+					<label>
+						Moneda del distribuidor
+						<input type="text" id="moneda" value="CLP" readonly />
+					</label>
+					<label>
+						Llegada estimada
+						<input type="date" id="llegadaEstimada" />
+					</label>
+				<label class="full">
+					Notas
+					<textarea id="notas" rows="3" class="auto-grow"></textarea>
+				</label>
+			</div>
+
+				<div class="total-preview">
+					<span>Total calculado</span>
+					<strong id="totalPreview">$0</strong>
+				</div>
+
+				<footer class="modal-actions">
+					<button type="button" id="cancelBtn" class="btn btn-ghost">
+						Cancelar
+					</button>
+					<button type="submit" class="btn btn-primary">Guardar Pedido</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+
+	<div id="reportModal" class="modal" aria-hidden="true">
+		<div class="modal-card report-modal" role="dialog" aria-modal="true">
+			<header class="modal-head">
+				<h3>Selecciona registros para el reporte</h3>
+				<button id="closeReportModal" class="icon-btn" aria-label="Cerrar">x</button>
+			</header>
+			<div class="modal-form report-modal-form">
+				<!-- Búsqueda -->
+				<div class="report-search-section">
+					<input 
+						type="text" 
+						id="reportSearchInput" 
+						placeholder="Buscar por cliente, fecha, región, estado, rango..." 
+						class="search-input"
+					/>
+				</div>
+
+				<!-- Selección de registros -->
+				<div class="report-records-section">
+					<div class="report-records-header">
+						<h4>Registros (<span id="recordsCount">0</span>):</h4>
+						<label class="mark-all-label">
+							<input type="checkbox" id="markAllCheckbox"> Marcar todo
+						</label>
+					</div>
+					<div class="report-records-list" id="reportRecordsList">
+						<!-- Se genera dinámicamente -->
+					</div>
+				</div>
+			</div>
+			<footer class="modal-actions">
+				<button type="button" id="cancelReportBtn" class="btn btn-ghost">Cancelar</button>
+				<button type="button" id="downloadReportBtn" class="btn btn-primary">Descargar Reporte</button>
+			</footer>
+		</div>
+	</div>
+
+	<div id="confirmModal" class="modal" aria-hidden="true">
+		<div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+			<header class="modal-head">
+				<h3 id="confirmTitle">Confirmar eliminacion</h3>
+				<button id="confirmClose" class="icon-btn" aria-label="Cerrar">x</button>
+			</header>
+			<div class="confirm-body">
+				<p id="confirmMessage"></p>
+			</div>
+			<footer class="modal-actions confirm-actions">
+				<button type="button" id="confirmCancel" class="btn btn-ghost">Cancelar</button>
+				<button type="button" id="confirmDelete" class="btn btn-primary">Eliminar</button>
+			</footer>
+		</div>
+	</div>
+
+	<!-- Modal para seleccionar formato -->
+	<div id="formatModal" class="modal" style="display: none;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>Seleccionar Formato</h3>
+				<button type="button" class="close-modal" onclick="document.getElementById('formatModal').style.display = 'none';">✕</button>
+			</div>
+			<div class="modal-body">
+				<p>¿Qué tipo de formato deseas descargar?</p>
+				<div class="format-buttons">
+					<button id="formatTiendaBtn" class="btn btn-primary">🏪 Formato Tienda</button>
+					<button id="formatIndividualBtn" class="btn btn-secondary">👤 Formato Individual</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="undoToast" class="undo-toast" aria-live="polite">
+		<span id="undoMessage"></span>
+		<button type="button" id="undoBtn" class="btn btn-ghost btn-sm">Deshacer</button>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script>
+		const storageKey = "parchesOrders";
+
+		const currency = new Intl.NumberFormat("es-CL", {
+			style: "currency",
+			currency: "CLP",
+			minimumFractionDigits: 0,
+		});
+
+		// Configurar PDF.js worker
+		if (typeof pdfjsLib !== 'undefined') {
+			pdfjsLib.GlobalWorkerOptions.workerSrc =
+				"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+		}
+
+		// Variables globales
+		let modal, confirmModal, confirmMessageEl, confirmDeleteBtn, confirmCancelBtn, confirmCloseBtn, undoToastEl, undoMessageEl, undoBtn, orderForm, ordersBody, paginationEl, totalPedidosEl, valorTotalEl, valorPendienteEl, valorEntregadoEl, totalPreview, importInput, pdfInput, fields;
+		let currentPage = 1;
+		const pageSize = 10;
+		let currentFilteredOrders = null;
+		let pendingDeleteId = null;
+		let lastDeletedOrder = null;
+		let undoTimer = null;
+
+		// Variables para el modal de reportes
+		let reportModal;
+		let selectedReportRecords = new Set();
+		let reportFilteredOrders = [];
+		 
+		const autoResize = (textarea) => {
+			if (!textarea) return;
+			try {
+				textarea.style.height = "auto";
+				textarea.style.height = `${textarea.scrollHeight}px`;
+			} catch (e) {
+				console.error("Error en autoResize:", e);
+			}
+		};
+
+		const autoResizeAll = () => {
+			if (!fields) return;
+			autoResize(fields.enviarA);
+			autoResize(fields.facturarA);
+			autoResize(fields.productos);
+			autoResize(fields.distribuidor);
+			autoResize(fields.notas);
+		};
+
+		const defaultOrders = [
+			{
+				id: crypto.randomUUID(),
+				fecha: "2025-12-05",
+				cliente: "Juan Garcia",
+				tipoCliente: "individual",
+				rango: "Capitán",
+				region: "Santiago",
+				enviarA: "",
+				facturarA: "",
+				productos: "Parche Rojo Grande",
+				cantidad: 10,
+				unitario: 5000,
+				descuento: 0,
+				subtotal: 50000,
+				impuestos: 0,
+				envio: 0,
+				estado: "Confirmado",
+				condicionPago: "Ninguna",
+				moneda: "CLP",
+				llegadaEstimada: "",
+				distribuidor: "",
+				notas: "Entrega urgente",
+			},
+			{
+				id: crypto.randomUUID(),
+				fecha: "2025-12-04",
+				cliente: "Maria Lopez",
+				tipoCliente: "tienda",
+				rango: "N/A",
+				region: "Puente Alto",
+				enviarA: "",
+				facturarA: "",
+				productos: "Parche Azul Mediano",
+				cantidad: 5,
+				unitario: 3500,
+				descuento: 0,
+				subtotal: 17500,
+				impuestos: 0,
+				envio: 0,
+				estado: "Pendiente",
+				condicionPago: "Ninguna",
+				moneda: "CLP",
+				llegadaEstimada: "",
+				distribuidor: "",
+				notas: "",
+			},
+		];
+
+		const getOrders = () => {
+			const raw = localStorage.getItem(storageKey);
+			if (!raw) {
+				localStorage.setItem(storageKey, JSON.stringify(defaultOrders));
+				return [...defaultOrders];
+			}
+			try {
+				return JSON.parse(raw) || [];
+			} catch {
+				return [];
+			}
+		};
+
+		const saveOrders = (orders) => {
+			localStorage.setItem(storageKey, JSON.stringify(orders));
+		};
+
+		const seedTestOrders = (count = 12) => {
+			const base = getOrders();
+			const estados = ["Pendiente", "En curso", "Entregado"];
+			const regiones = ["Santiago", "Puente Alto", "Maipu", "La Florida", "Providencia"];
+			const rangos = ["Carabinero", "Cabo Primero", "Sargento Segundo", "Suboficial", "Teniente"];
+			const productos = [
+				"Parche Grado Verde",
+				"Parche Nombre Blanco",
+				"Parche Bandera",
+				"Parche Institucional",
+				"Parche Especial",
+			];
+
+			const now = new Date();
+			const newOrders = Array.from({ length: count }, (_, i) => {
+				const tipoCliente = i % 2 === 0 ? "tienda" : "individual";
+				const fecha = new Date(now);
+				fecha.setDate(now.getDate() - i);
+				const llegada = new Date(now);
+				llegada.setDate(now.getDate() + 7 + i);
+
+				return {
+					id: crypto.randomUUID(),
+					fecha: fecha.toISOString().slice(0, 10),
+					cliente: `Cliente Prueba ${base.length + i + 1}`,
+					tipoCliente,
+					rango: tipoCliente === "tienda" ? "N/A" : rangos[i % rangos.length],
+					region: regiones[i % regiones.length],
+					enviarA: "Direccion de prueba\nComuna de prueba",
+					facturarA: tipoCliente === "tienda" ? "Facturacion prueba\nRUT 12.345.678-9" : "",
+					productos: productos[i % productos.length],
+					cantidad: (i % 5) + 1,
+					unitario: 3500 + i * 250,
+					descuento: i % 3 === 0 ? 5 : 0,
+					subtotal: 0,
+					impuestos: 0,
+					envio: 0,
+					estado: estados[i % estados.length],
+					condicionPago: "Ninguna",
+					moneda: "CLP",
+					llegadaEstimada: llegada.toISOString().slice(0, 10),
+					distribuidor: tipoCliente === "tienda" ? "Verde Legion" : "",
+					notas: "Pedido de prueba",
+				};
+			});
+
+			saveOrders([...base, ...newOrders]);
+			currentFilteredOrders = null;
+			currentPage = 1;
+			const searchInput = document.getElementById("searchInput");
+			if (searchInput) searchInput.value = "";
+			renderOrders();
+		};
+
+		const calcSubtotal = (order) => {
+			const qty = Number(order.cantidad) || 0;
+			const price = Number(order.unitario) || 0;
+			const discount = Number(order.descuento) || 0;
+			const subtotal = qty * price;
+			const discounted = subtotal - subtotal * (discount / 100);
+			const manual = Number(order.subtotal) || 0;
+			return manual > 0 ? manual : Math.max(discounted, 0);
+		};
+
+		const toTotal = (order) => {
+			const subtotal = calcSubtotal(order);
+			const impuestos = Number(order.impuestos) || 0;
+			const envio = Number(order.envio) || 0;
+			return Math.max(subtotal + impuestos + envio, 0);
+		};
+
+		const formatDate = (value) => {
+			if (!value) return "";
+			const trimmed = String(value).trim();
+
+			if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+				const [year, month, day] = trimmed.split("-");
+				return `${day}-${month}-${year}`;
+			}
+
+			if (/^\d{2}-\d{2}-\d{4}$/.test(trimmed)) {
+				return trimmed;
+			}
+
+			if (/^\d{4}\/\d{2}\/\d{2}$/.test(trimmed)) {
+				const [year, month, day] = trimmed.split("/");
+				return `${day}-${month}-${year}`;
+			}
+
+			if (/^\d{2}\/\d{2}\/\d{4}$/.test(trimmed)) {
+				const [day, month, year] = trimmed.split("/");
+				return `${day}-${month}-${year}`;
+			}
+
+			return trimmed;
+		};
+
+		const badgeClass = (estado) => {
+			const key = estado.toLowerCase();
+			if (key === "en curso") return "en-curso";
+			return key;
+		};
+
+		const renderTotals = (orders) => {
+			const total = orders.reduce((sum, order) => sum + toTotal(order), 0);
+			const pendienteCount = orders.filter((order) => ["pendiente", "en curso"].includes(order.estado.toLowerCase())).length;
+			const entregadoCount = orders.filter((order) => order.estado.toLowerCase() === "entregado").length;
+
+			totalPedidosEl.textContent = orders.length;
+			valorTotalEl.textContent = currency.format(total);
+			valorPendienteEl.textContent = pendienteCount.toString();
+			valorEntregadoEl.textContent = entregadoCount.toString();
+		};
+
+		const renderOrders = (filteredOrders = null) => {
+			if (filteredOrders) {
+				currentFilteredOrders = filteredOrders;
+				currentPage = 1;
+			}
+
+			const orders = currentFilteredOrders || getOrders();
+			ordersBody.innerHTML = "";
+
+			const totalPages = Math.max(1, Math.ceil(orders.length / pageSize));
+			if (currentPage > totalPages) {
+				currentPage = totalPages;
+			}
+
+			const startIndex = (currentPage - 1) * pageSize;
+			const pageOrders = orders.slice(startIndex, startIndex + pageSize);
+
+			pageOrders.forEach((order, index) => {
+				const orderNumber = startIndex + index + 1;
+				const tipoCliente = order.tipoCliente || (order.rango === "N/A" ? "tienda" : "individual");
+				const rangoDisplay = tipoCliente === "tienda" ? "Tienda" : (order.rango || "N/A");
+				
+				const enviarADisplay = order.enviarA ? order.enviarA.split("\n")[0] : "";
+				
+				const row = document.createElement("tr");
+				row.innerHTML = `
+					<td class="num-col">${orderNumber}</td>
+					<td>${formatDate(order.fecha)}</td>
+					<td>${order.cliente}</td>
+					<td>${rangoDisplay}</td>
+					<td>${order.region}</td>
+					<td>${enviarADisplay}</td>
+					<td>${order.cantidad}</td>
+					<td>${currency.format(order.unitario)}</td>
+					<td>${order.descuento || 0}%</td>
+					<td><strong>${currency.format(toTotal(order))}</strong></td>
+					<td><span class="badge ${badgeClass(order.estado)}">${order.estado}</span></td>
+					<td class="actions-cell">
+						<div class="actions">
+							<button class="btn btn-secondary btn-sm" data-edit="${order.id}">Editar</button>
+							<button class="btn btn-ghost btn-sm" data-delete="${order.id}">Eliminar</button>
+						</div>
+					</td>
+				`;
+				ordersBody.appendChild(row);
+			});
+
+			renderTotals(orders);
+			updatePagination(totalPages, orders.length);
+		};
+
+		const updatePagination = (totalPages, totalItems) => {
+			if (!paginationEl) return;
+			paginationEl.innerHTML = "";
+
+			if (totalItems <= pageSize) {
+				paginationEl.classList.remove("visible");
+				return;
+			}
+
+			paginationEl.classList.add("visible");
+
+			const createButton = (label, page, { disabled = false, active = false } = {}) => {
+				const button = document.createElement("button");
+				button.type = "button";
+				button.className = "page-btn";
+				button.textContent = label;
+				if (active) button.classList.add("active");
+				if (disabled) button.disabled = true;
+				button.addEventListener("click", () => {
+					currentPage = page;
+					renderOrders(currentFilteredOrders);
+				});
+				return button;
+			};
+
+			paginationEl.appendChild(
+				createButton("Anterior", Math.max(1, currentPage - 1), { disabled: currentPage === 1 })
+			);
+
+			const pages = [];
+			if (totalPages <= 5) {
+				for (let i = 1; i <= totalPages; i += 1) {
+					pages.push(i);
+				}
+			} else {
+				pages.push(1);
+				const start = Math.max(2, currentPage - 1);
+				const end = Math.min(totalPages - 1, currentPage + 1);
+				if (start > 2) pages.push("...");
+				for (let i = start; i <= end; i += 1) {
+					pages.push(i);
+				}
+				if (end < totalPages - 1) pages.push("...");
+				pages.push(totalPages);
+			}
+
+			pages.forEach((page) => {
+				if (page === "...") {
+					const ellipsis = document.createElement("span");
+					ellipsis.className = "page-ellipsis";
+					ellipsis.textContent = "...";
+					paginationEl.appendChild(ellipsis);
+					return;
+				}
+				paginationEl.appendChild(createButton(page.toString(), page, { active: page === currentPage }));
+			});
+
+			paginationEl.appendChild(
+				createButton("Siguiente", Math.min(totalPages, currentPage + 1), { disabled: currentPage === totalPages })
+			);
+
+			const pageInfo = document.createElement("span");
+			pageInfo.className = "page-info";
+			pageInfo.textContent = `Pagina ${currentPage} de ${totalPages}`;
+			paginationEl.appendChild(pageInfo);
+		};
+
+		const openModal = (title) => {
+			document.getElementById("modalTitle").textContent = title;
+			modal.classList.add("active");
+			modal.setAttribute("aria-hidden", "false");
+			document.body.classList.add("modal-open");
+		};
+
+		const closeModal = () => {
+			modal.classList.remove("active");
+			modal.setAttribute("aria-hidden", "true");
+			document.body.classList.remove("modal-open");
+			orderForm.reset();
+			fields.id.value = "";
+			fields.cantidad.value = 1;
+			fields.unitario.value = 0;
+			fields.descuento.value = 0;
+			fields.subtotal.value = 0;
+			fields.impuestos.value = 0;
+			fields.envio.value = 0;
+			fields.enviarA.value = "";
+			fields.facturarA.value = "";
+			fields.productos.value = "";
+			fields.condicionPago.value = "Ninguna";
+			fields.moneda.value = "CLP";
+			fields.llegadaEstimada.value = "";
+			fields.distribuidor.value = "";
+			updatePreview();
+		};
+
+		const openConfirmDelete = (order) => {
+			pendingDeleteId = order ? order.id : null;
+			const orderLabel = order
+				? `${order.cliente} (${formatDate(order.fecha)})`
+				: "este pedido";
+			confirmMessageEl.textContent = `¿Seguro que deseas eliminar ${orderLabel}? Esta accion no se puede deshacer.`;
+			confirmModal.classList.add("active");
+			confirmModal.setAttribute("aria-hidden", "false");
+			document.body.classList.add("modal-open");
+		};
+
+		const closeConfirmDelete = () => {
+			confirmModal.classList.remove("active");
+			confirmModal.setAttribute("aria-hidden", "true");
+			document.body.classList.remove("modal-open");
+			pendingDeleteId = null;
+		};
+
+		const showUndoToast = (order) => {
+			lastDeletedOrder = order;
+			undoMessageEl.textContent = `Pedido eliminado: ${order.cliente}.`;
+			undoToastEl.classList.add("visible");
+			if (undoTimer) clearTimeout(undoTimer);
+			undoTimer = setTimeout(() => {
+				undoToastEl.classList.remove("visible");
+				lastDeletedOrder = null;
+			}, 5000);
+		};
+
+		const handleUndoDelete = () => {
+			if (!lastDeletedOrder) return;
+			const orders = getOrders();
+			orders.push(lastDeletedOrder);
+			saveOrders(orders);
+			renderOrders();
+			undoToastEl.classList.remove("visible");
+			lastDeletedOrder = null;
+			if (undoTimer) clearTimeout(undoTimer);
+		};
+
+		const updatePreview = () => {
+			const qty = Number(fields.cantidad.value) || 0;
+			const price = Number(fields.unitario.value) || 0;
+			const discount = Number(fields.descuento.value) || 0;
+			const rawSubtotal = qty * price;
+			const subtotal = Math.max(rawSubtotal - rawSubtotal * (discount / 100), 0);
+			fields.subtotal.value = Math.round(subtotal);
+			const order = {
+				cantidad: qty,
+				unitario: price,
+				descuento: discount,
+				subtotal: fields.subtotal.value,
+				impuestos: fields.impuestos.value,
+				envio: fields.envio.value,
+			};
+			totalPreview.textContent = currency.format(toTotal(order));
+		};
+
+		const fillForm = (order) => {
+			orderForm.reset();
+			
+			fields.id.value = order.id;
+			fields.fecha.value = order.fecha;
+			fields.cliente.value = order.cliente;
+			
+			const tipoCliente = order.tipoCliente || (order.rango === "N/A" || !order.rango ? "tienda" : "individual");
+			fields.tipoCliente.value = tipoCliente;
+			
+			const rangoLabel = document.getElementById("rangoLabel");
+			if (tipoCliente === "individual") {
+				rangoLabel.style.display = "";
+				fields.rango.setAttribute("required", "required");
+				fields.rango.value = order.rango;
+			} else {
+				rangoLabel.style.display = "none";
+				fields.rango.removeAttribute("required");
+				fields.rango.value = order.rango || "N/A";
+			}
+			
+			fields.region.value = order.region;
+			fields.enviarA.value = order.enviarA || "";
+			fields.facturarA.value = order.facturarA || "";
+			fields.productos.value = order.productos || "";
+			fields.cantidad.value = order.cantidad;
+			fields.unitario.value = order.unitario;
+			fields.descuento.value = order.descuento;
+			fields.subtotal.value = order.subtotal || 0;
+			fields.impuestos.value = order.impuestos || 0;
+			fields.envio.value = order.envio || 0;
+			fields.estado.value = order.estado;
+			fields.condicionPago.value = order.condicionPago || "";
+			fields.moneda.value = order.moneda || "";
+			fields.llegadaEstimada.value = order.llegadaEstimada || "";
+			fields.distribuidor.value = order.distribuidor || "";
+			fields.notas.value = order.notas || "";
+			
+			setTimeout(() => {
+				autoResizeAll();
+				updatePreview();
+			}, 50);
+		};
+
+		const collectForm = () => ({
+			id: fields.id.value || crypto.randomUUID(),
+			fecha: fields.fecha.value,
+			cliente: fields.cliente.value.trim(),
+			tipoCliente: fields.tipoCliente.value,
+			rango: fields.rango.value.trim(),
+			region: fields.region.value.trim(),
+			enviarA: fields.enviarA.value.trim(),
+			facturarA: fields.facturarA.value.trim(),
+			productos: fields.productos.value.trim(),
+			cantidad: Number(fields.cantidad.value),
+			unitario: Number(fields.unitario.value),
+			descuento: Number(fields.descuento.value) || 0,
+			subtotal: Number(fields.subtotal.value) || 0,
+			impuestos: Number(fields.impuestos.value) || 0,
+			envio: Number(fields.envio.value) || 0,
+			estado: fields.estado.value,
+			condicionPago: fields.condicionPago.value.trim(),
+			moneda: fields.moneda.value.trim(),
+			llegadaEstimada: fields.llegadaEstimada.value,
+			distribuidor: fields.distribuidor.value.trim(),
+			notas: fields.notas.value.trim(),
+		});
+
+		const exportJson = () => {
+			try {
+				const data = JSON.stringify(getOrders(), null, 2);
+				const blob = new Blob([data], { type: "application/json" });
+				const url = URL.createObjectURL(blob);
+				const link = document.createElement("a");
+				link.href = url;
+				link.download = "respaldo-parche.json";
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+				URL.revokeObjectURL(url);
+			} catch (error) {
+				alert("Error al descargar respaldo: " + error.message);
+			}
+		};
+
+		const importJson = (file) => {
+			const reader = new FileReader();
+			reader.onload = (event) => {
+				try {
+					const content = event.target.result;
+					const parsed = JSON.parse(content);
+					if (!Array.isArray(parsed)) {
+						alert("El archivo no tiene formato valido. Debe ser una lista de pedidos.");
+						return;
+					}
+					if (parsed.length === 0) {
+						alert("El archivo está vacío. No hay pedidos para cargar.");
+						return;
+					}
+					const ordersCount = parsed.length;
+					saveOrders(parsed);
+					renderOrders();
+					alert(`✓ Respaldo cargado exitosamente.\n${ordersCount} pedido(s) importado(s).`);
+				} catch (error) {
+					alert("Error al leer el archivo: " + error.message + "\nAsegúrate de que sea un respaldo válido.");
+				}
+			};
+			reader.onerror = () => {
+				alert("No se pudo leer el archivo. Intenta nuevamente.");
+			};
+			reader.readAsText(file);
+		};
+
+		const todayIso = () => {
+			const today = new Date();
+			return today.toISOString().slice(0, 10);
+		};
+
+		const filterOrders = (searchTerm) => {
+			if (!searchTerm || searchTerm.trim() === "") {
+				currentFilteredOrders = null;
+				currentPage = 1;
+				renderOrders();
+				return;
+			}
+			
+			const term = searchTerm.toLowerCase();
+			const allOrders = getOrders();
+			
+			const filtered = allOrders.filter(order => {
+				const tipoCliente = order.tipoCliente || (order.rango === "N/A" ? "tienda" : "individual");
+				const rangoDisplay = tipoCliente === "tienda" ? "Tienda" : (order.rango || "N/A");
+				
+				return (
+					order.cliente.toLowerCase().includes(term) ||
+					formatDate(order.fecha).toLowerCase().includes(term) ||
+					order.region.toLowerCase().includes(term) ||
+					order.estado.toLowerCase().includes(term) ||
+					rangoDisplay.toLowerCase().includes(term) ||
+					(order.enviarA && order.enviarA.toLowerCase().includes(term))
+				);
+			});
+			
+			renderOrders(filtered);
+		};
+
+		const renderReportRecordsList = () => {
+			const recordsList = document.getElementById("reportRecordsList");
+			recordsList.innerHTML = "";
+
+			reportFilteredOrders.forEach((order) => {
+				const tipoCliente = order.tipoCliente || (order.rango === "N/A" ? "tienda" : "individual");
+				const rangoDisplay = tipoCliente === "tienda" ? "Tienda" : (order.rango || "N/A");
+				
+				const isChecked = selectedReportRecords.has(order.id);
+				
+				const itemDiv = document.createElement("div");
+				itemDiv.className = "report-record-item";
+				itemDiv.innerHTML = `
+					<input type="checkbox" class="record-checkbox" data-order-id="${order.id}" ${isChecked ? "checked" : ""}>
+					<label>
+						<strong>${order.cliente}</strong>
+						<div class="report-record-info">
+							<span>Fecha: <strong>${formatDate(order.fecha)}</strong></span>
+							<span>Región: <strong>${order.region}</strong></span>
+							<span>Total: <strong>${currency.format(toTotal(order))}</strong></span>
+						</div>
+					</label>
+				`;
+				
+				const checkbox = itemDiv.querySelector(".record-checkbox");
+				checkbox.addEventListener("change", (e) => {
+					if (e.target.checked) {
+						selectedReportRecords.add(order.id);
+					} else {
+						selectedReportRecords.delete(order.id);
+					}
+					updateReportMarkAllCheckbox();
+				});
+				
+				recordsList.appendChild(itemDiv);
+			});
+
+			document.getElementById("recordsCount").textContent = reportFilteredOrders.length;
+		};
+
+		const filterReportRecords = (searchTerm) => {
+			if (!searchTerm || searchTerm.trim() === "") {
+				reportFilteredOrders = getOrders();
+			} else {
+				const term = searchTerm.toLowerCase();
+				const allOrders = getOrders();
+				
+				reportFilteredOrders = allOrders.filter(order => {
+					const tipoCliente = order.tipoCliente || (order.rango === "N/A" ? "tienda" : "individual");
+					const rangoDisplay = tipoCliente === "tienda" ? "Tienda" : (order.rango || "N/A");
+					
+					return (
+						order.cliente.toLowerCase().includes(term) ||
+						formatDate(order.fecha).toLowerCase().includes(term) ||
+						order.region.toLowerCase().includes(term) ||
+						order.estado.toLowerCase().includes(term) ||
+						rangoDisplay.toLowerCase().includes(term) ||
+						(order.enviarA && order.enviarA.toLowerCase().includes(term))
+					);
+				});
+			}
+			
+			renderReportRecordsList();
+		};
+
+		const updateReportMarkAllCheckbox = () => {
+			const markAllCheckbox = document.getElementById("markAllCheckbox");
+			const allChecked = reportFilteredOrders.length > 0 && 
+				reportFilteredOrders.every(order => selectedReportRecords.has(order.id));
+			markAllCheckbox.checked = allChecked;
+		};
+
+		const toggleMarkAllReports = () => {
+			const markAllCheckbox = document.getElementById("markAllCheckbox");
+			if (markAllCheckbox.checked) {
+				reportFilteredOrders.forEach(order => selectedReportRecords.add(order.id));
+			} else {
+				reportFilteredOrders.forEach(order => selectedReportRecords.delete(order.id));
+			}
+			renderReportRecordsList();
+		};
+
+		const openReportModal = () => {
+			reportModal.classList.add("active");
+			reportModal.setAttribute("aria-hidden", "false");
+			document.body.classList.add("modal-open");
+			
+			selectedReportRecords = new Set();
+			reportFilteredOrders = getOrders();
+			renderReportRecordsList();
+			document.getElementById("reportSearchInput").value = "";
+			updateReportMarkAllCheckbox();
+		};
+
+		const closeReportModal = () => {
+			reportModal.classList.remove("active");
+			reportModal.setAttribute("aria-hidden", "true");
+			document.body.classList.remove("modal-open");
+		};
+
+		const downloadSelectedReports = () => {
+			if (selectedReportRecords.size === 0) {
+				alert("Por favor selecciona al menos un registro para descargar.");
+				return;
+			}
+			
+			const allOrders = getOrders();
+			const selectedOrders = allOrders.filter(order => selectedReportRecords.has(order.id));
+			
+			exportPdf(selectedOrders);
+			closeReportModal();
+		};
+
+		const exportPdf = (ordersToExport = null) => {
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF();
+			const orders = ordersToExport || getOrders();
+			
+			const totalPedidos = orders.length;
+			const valorTotal = orders.reduce((sum, order) => sum + toTotal(order), 0);
+			const valorPendiente = orders
+				.filter((order) => ["pendiente", "en curso"].includes(order.estado.toLowerCase()))
+				.reduce((sum, order) => sum + toTotal(order), 0);
+			const valorEntregado = orders
+				.filter((order) => order.estado.toLowerCase() === "entregado")
+				.reduce((sum, order) => sum + toTotal(order), 0);
+			
+			const pageWidth = doc.internal.pageSize.getWidth();
+			const pageHeight = doc.internal.pageSize.getHeight();
+			const margin = 15;
+			let yPos = margin;
+			
+			doc.setFontSize(18);
+			doc.setFont("helvetica", "bold");
+			doc.text("Parches y Costuras", margin, yPos);
+			yPos += 7;
+			
+			doc.setFontSize(10);
+			doc.setFont("helvetica", "normal");
+			doc.setTextColor(100, 100, 100);
+			doc.text("Reporte de Pedidos", margin, yPos);
+			yPos += 4;
+			
+			const today = new Date().toLocaleDateString('es-CL', { 
+				year: 'numeric', 
+				month: 'long', 
+				day: 'numeric' 
+			});
+			doc.text(`Fecha: ${today}`, margin, yPos);
+			yPos += 12;
+			
+			doc.setFontSize(12);
+			doc.setFont("helvetica", "bold");
+			doc.setTextColor(0, 0, 0);
+			doc.text("Resumen", margin, yPos);
+			yPos += 8;
+			
+			doc.setFontSize(10);
+			doc.setFont("helvetica", "normal");
+			
+			const summaryData = [
+				["Total pedidos:", totalPedidos.toString()],
+				["Valor total:", currency.format(valorTotal)],
+				["Pendiente/En curso:", currency.format(valorPendiente)],
+				["Entregado:", currency.format(valorEntregado)]
+			];
+			
+			summaryData.forEach(([label, value]) => {
+				doc.text(label, margin, yPos);
+				doc.setFont("helvetica", "bold");
+				doc.text(value, margin + 50, yPos);
+				doc.setFont("helvetica", "normal");
+				yPos += 6;
+			});
+			
+			yPos += 10;
+			
+			doc.setFontSize(12);
+			doc.setFont("helvetica", "bold");
+			doc.text("Detalle de Pedidos", margin, yPos);
+			yPos += 8;
+			
+			doc.setFontSize(8);
+			doc.setFont("helvetica", "bold");
+			const headers = ["#", "Fecha", "Cliente", "Rango", "Region", "Cant.", "Unitario", "Desc.", "Total", "Estado"];
+			const colWidths = [6, 18, 32, 18, 22, 10, 18, 10, 20, 18];
+			let xPos = margin;
+			
+			doc.setFillColor(240, 240, 240);
+			doc.rect(margin, yPos - 5, pageWidth - 2 * margin, 7, 'F');
+			
+			headers.forEach((header, i) => {
+				doc.text(header, xPos, yPos);
+				xPos += colWidths[i];
+			});
+			
+			yPos += 5;
+			doc.setFont("helvetica", "normal");
+
+			const fitText = (text, maxWidth) => {
+				const raw = String(text ?? "");
+				if (doc.getTextWidth(raw) <= maxWidth) return raw;
+				const ellipsis = "...";
+				let trimmed = raw;
+				while (trimmed.length > 0 && doc.getTextWidth(`${trimmed}${ellipsis}`) > maxWidth) {
+					trimmed = trimmed.slice(0, -1);
+				}
+				return trimmed.length ? `${trimmed}${ellipsis}` : raw;
+			};
+			
+			orders.forEach((order, index) => {
+				if (yPos > pageHeight - 40) {
+					doc.addPage();
+					yPos = margin;
+				}
+				
+				const tipoCliente = order.tipoCliente || (order.rango === "N/A" ? "tienda" : "individual");
+				const rangoDisplay = tipoCliente === "tienda" ? "Tienda" : (order.rango || "N/A");
+				
+				xPos = margin;
+				const rowData = [
+					(index + 1).toString(),
+					formatDate(order.fecha),
+					fitText(order.cliente, colWidths[2] - 1),
+					fitText(rangoDisplay, colWidths[3] - 1),
+					fitText(order.region, colWidths[4] - 1),
+					order.cantidad.toString(),
+					currency.format(order.unitario),
+					`${order.descuento || 0}%`,
+					currency.format(toTotal(order)),
+					fitText(order.estado, colWidths[9] - 1)
+				];
+				
+				if (index % 2 === 0) {
+					doc.setFillColor(250, 250, 250);
+					doc.rect(margin, yPos - 4, pageWidth - 2 * margin, 6, 'F');
+				}
+				
+				rowData.forEach((data, i) => {
+					doc.text(data, xPos, yPos);
+					xPos += colWidths[i];
+				});
+				
+				yPos += 6;
+			});
+			
+			yPos += 10;
+			
+			if (yPos > pageHeight - 60) {
+				doc.addPage();
+				yPos = margin;
+			}
+			
+			doc.setFontSize(12);
+			doc.setFont("helvetica", "bold");
+			doc.text("Información Detallada", margin, yPos);
+			yPos += 8;
+			
+			doc.setFontSize(9);
+			doc.setFont("helvetica", "normal");
+			
+			orders.forEach((order, index) => {
+				if (yPos > pageHeight - 50) {
+					doc.addPage();
+					yPos = margin;
+				}
+				
+				const tipoCliente = order.tipoCliente || (order.rango === "N/A" ? "tienda" : "individual");
+				const rangoDisplay = tipoCliente === "tienda" ? "Tienda" : (order.rango || "N/A");
+				
+				doc.setFont("helvetica", "bold");
+				doc.text(`Pedido ${index + 1}: ${order.cliente}`, margin, yPos);
+				yPos += 5;
+				
+				const lineX = margin + 5;
+				doc.setFont("helvetica", "bold");
+				doc.text("Fecha: ", lineX, yPos);
+				const fechaLabelW = doc.getTextWidth("Fecha: ");
+				doc.setFont("helvetica", "normal");
+				const fechaText = `${formatDate(order.fecha)} | `;
+				doc.text(fechaText, lineX + fechaLabelW, yPos);
+				const fechaTextW = doc.getTextWidth(fechaText);
+
+				doc.setFont("helvetica", "bold");
+				doc.text("Rango: ", lineX + fechaLabelW + fechaTextW, yPos);
+				const rangoLabelW = doc.getTextWidth("Rango: ");
+				doc.setFont("helvetica", "normal");
+				const rangoText = `${rangoDisplay} | `;
+				doc.text(rangoText, lineX + fechaLabelW + fechaTextW + rangoLabelW, yPos);
+				const rangoTextW = doc.getTextWidth(rangoText);
+
+				doc.setFont("helvetica", "bold");
+				doc.text("Región: ", lineX + fechaLabelW + fechaTextW + rangoLabelW + rangoTextW, yPos);
+				const regionLabelW = doc.getTextWidth("Región: ");
+				doc.setFont("helvetica", "normal");
+				doc.text(order.region, lineX + fechaLabelW + fechaTextW + rangoLabelW + rangoTextW + regionLabelW, yPos);
+				yPos += 5;
+				
+				if (order.llegadaEstimada) {
+					doc.setFont("helvetica", "bold");
+					doc.text("Llegada estimada: ", margin + 5, yPos);
+					const llegadaLabelW = doc.getTextWidth("Llegada estimada: ");
+					doc.setFont("helvetica", "normal");
+					doc.text(formatDate(order.llegadaEstimada), margin + 5 + llegadaLabelW, yPos);
+					yPos += 5;
+				}
+				
+				if (order.enviarA) {
+					doc.setFont("helvetica", "bold");
+					doc.text("Enviar a:", margin + 5, yPos);
+					yPos += 4;
+					doc.setFont("helvetica", "normal");
+					const enviarALines = doc.splitTextToSize(order.enviarA.replace(/\n/g, ', '), pageWidth - 2 * margin - 10);
+					doc.text(enviarALines, margin + 10, yPos);
+					yPos += 4 * enviarALines.length;
+				}
+				
+				if (order.facturarA) {
+					doc.setFont("helvetica", "bold");
+					doc.text("Facturar a:", margin + 5, yPos);
+					yPos += 4;
+					doc.setFont("helvetica", "normal");
+					const facturarALines = doc.splitTextToSize(order.facturarA.replace(/\n/g, ', '), pageWidth - 2 * margin - 10);
+					doc.text(facturarALines, margin + 10, yPos);
+					yPos += 4 * facturarALines.length;
+				}
+				
+				if (order.distribuidor) {
+					doc.setFont("helvetica", "bold");
+					doc.text("Distribuidor:", margin + 5, yPos);
+					yPos += 4;
+					doc.setFont("helvetica", "normal");
+					const distribuidorLines = doc.splitTextToSize(order.distribuidor.replace(/\n/g, ', '), pageWidth - 2 * margin - 10);
+					doc.text(distribuidorLines, margin + 10, yPos);
+					yPos += 4 * distribuidorLines.length;
+				}
+				
+				if (order.productos) {
+					doc.setFont("helvetica", "bold");
+					doc.text("Producto (PDF):", margin + 5, yPos);
+					yPos += 4;
+					doc.setFont("helvetica", "normal");
+					const productosLines = doc.splitTextToSize(order.productos.replace(/\n/g, ', '), pageWidth - 2 * margin - 10);
+					doc.text(productosLines, margin + 10, yPos);
+					yPos += 4 * productosLines.length;
+				}
+				
+				if (order.notas) {
+					doc.setFont("helvetica", "bold");
+					doc.text("Notas:", margin + 5, yPos);
+					yPos += 4;
+					doc.setFont("helvetica", "normal");
+					const notasLines = doc.splitTextToSize(order.notas.replace(/\n/g, ', '), pageWidth - 2 * margin - 10);
+					doc.text(notasLines, margin + 10, yPos);
+					yPos += 4 * notasLines.length;
+				}
+				
+				yPos += 3;
+				doc.setDrawColor(220, 220, 220);
+				doc.line(margin, yPos, pageWidth - margin, yPos);
+				yPos += 5;
+			});
+			
+			const totalPages = doc.internal.getNumberOfPages();
+			for (let i = 1; i <= totalPages; i++) {
+				doc.setPage(i);
+				doc.setFontSize(8);
+				doc.setTextColor(150, 150, 150);
+				doc.text(
+					`Página ${i} de ${totalPages} - Generado el ${today}`,
+					pageWidth / 2,
+					pageHeight - 10,
+					{ align: 'center' }
+				);
+			}
+			
+			doc.save(`Reporte-Pedidos-${new Date().toISOString().slice(0, 10)}.pdf`);
+		};
+
+		const onReady = () => {
+			modal = document.getElementById("modal");
+			confirmModal = document.getElementById("confirmModal");
+			confirmMessageEl = document.getElementById("confirmMessage");
+			confirmDeleteBtn = document.getElementById("confirmDelete");
+			confirmCancelBtn = document.getElementById("confirmCancel");
+			confirmCloseBtn = document.getElementById("confirmClose");
+			undoToastEl = document.getElementById("undoToast");
+			undoMessageEl = document.getElementById("undoMessage");
+			undoBtn = document.getElementById("undoBtn");
+			orderForm = document.getElementById("orderForm");
+			ordersBody = document.getElementById("ordersBody");
+			paginationEl = document.getElementById("pagination");
+			totalPedidosEl = document.getElementById("totalPedidos");
+			valorTotalEl = document.getElementById("valorTotal");
+			valorPendienteEl = document.getElementById("valorPendiente");
+			valorEntregadoEl = document.getElementById("valorEntregado");
+			totalPreview = document.getElementById("totalPreview");
+			importInput = document.getElementById("importInput");
+			pdfInput = document.getElementById("pdfInput");
+
+			fields = {
+				id: document.getElementById("orderId"),
+				fecha: document.getElementById("fecha"),
+				cliente: document.getElementById("cliente"),
+				tipoCliente: document.getElementById("tipoCliente"),
+				rango: document.getElementById("rango"),
+				region: document.getElementById("region"),
+				enviarA: document.getElementById("enviarA"),
+				facturarA: document.getElementById("facturarA"),
+				productos: document.getElementById("productos"),
+				cantidad: document.getElementById("cantidad"),
+				unitario: document.getElementById("unitario"),
+				descuento: document.getElementById("descuento"),
+				subtotal: document.getElementById("subtotal"),
+				impuestos: document.getElementById("impuestos"),
+				envio: document.getElementById("envio"),
+				estado: document.getElementById("estado"),
+				condicionPago: document.getElementById("condicionPago"),
+				moneda: document.getElementById("moneda"),
+				llegadaEstimada: document.getElementById("llegadaEstimada"),
+				distribuidor: document.getElementById("distribuidor"),
+				notas: document.getElementById("notas"),
+			};
+			
+			const rangoLabel = document.getElementById("rangoLabel");
+
+			fields.tipoCliente.addEventListener("change", () => {
+				const tipo = fields.tipoCliente.value;
+				if (tipo === "individual") {
+					rangoLabel.style.display = "";
+					fields.rango.setAttribute("required", "required");
+				} else if (tipo === "tienda") {
+					rangoLabel.style.display = "none";
+					fields.rango.removeAttribute("required");
+					fields.rango.value = "N/A";
+				} else {
+					rangoLabel.style.display = "none";
+					fields.rango.removeAttribute("required");
+					fields.rango.value = "";
+				}
+			});
+
+			fields.fecha.value = todayIso();
+			updatePreview();
+			renderOrders();
+
+			document.getElementById("addBtn").addEventListener("click", () => {
+				orderForm.reset();
+				fields.fecha.value = todayIso();
+				fields.cantidad.value = 1;
+				fields.unitario.value = 0;
+				fields.descuento.value = 0;
+				fields.subtotal.value = 0;
+				fields.impuestos.value = 0;
+				fields.envio.value = 0;
+				fields.enviarA.value = "";
+				fields.facturarA.value = "";
+				fields.productos.value = "";
+				fields.estado.value = "Pendiente";
+				fields.condicionPago.value = "Ninguna";
+				fields.moneda.value = "CLP";
+				fields.llegadaEstimada.value = "";
+				fields.distribuidor.value = "";
+				openModal("Agregar Pedido");
+				autoResizeAll();
+				updatePreview();
+			});
+
+			document.getElementById("closeModal").addEventListener("click", closeModal);
+			document.getElementById("cancelBtn").addEventListener("click", closeModal);
+			document.getElementById("exportBtn").addEventListener("click", exportJson);
+			document.getElementById("exportPdfBtn").addEventListener("click", openReportModal);
+			document.getElementById("descargarFormatoBtn").addEventListener("click", () => {
+				document.getElementById("formatModal").style.display = "flex";
+			});
+			document.getElementById("seedOrdersBtn").addEventListener("click", () => seedTestOrders());
+
+			// Menu desplegable para móvil
+			const menuBtn = document.getElementById("menuBtn");
+			const menuDropdown = document.getElementById("menuDropdown");
+			
+			menuBtn.addEventListener("click", (e) => {
+				e.stopPropagation();
+				menuDropdown.classList.toggle("active");
+			});
+			
+			document.addEventListener("click", (e) => {
+				if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+					menuDropdown.classList.remove("active");
+				}
+			});
+
+			// Modal para seleccionar formato
+			document.getElementById("formatTiendaBtn").addEventListener("click", () => {
+				document.getElementById("formatoPdf").value = "tienda";
+				descargarFormato();
+				document.getElementById("formatModal").style.display = "none";
+			});
+			
+			document.getElementById("formatIndividualBtn").addEventListener("click", () => {
+				document.getElementById("formatoPdf").value = "individual";
+				descargarFormato();
+				document.getElementById("formatModal").style.display = "none";
+			});
+
+			reportModal = document.getElementById("reportModal");
+			const closeReportModalBtn = document.getElementById("closeReportModal");
+			const cancelReportBtn = document.getElementById("cancelReportBtn");
+			const downloadReportBtn = document.getElementById("downloadReportBtn");
+			const reportSearchInput = document.getElementById("reportSearchInput");
+			const markAllCheckbox = document.getElementById("markAllCheckbox");
+
+			closeReportModalBtn.addEventListener("click", closeReportModal);
+			cancelReportBtn.addEventListener("click", closeReportModal);
+			downloadReportBtn.addEventListener("click", downloadSelectedReports);
+			
+			reportSearchInput.addEventListener("input", (event) => {
+				filterReportRecords(event.target.value);
+			});
+			
+			markAllCheckbox.addEventListener("change", toggleMarkAllReports);
+
+			reportModal.addEventListener("click", (event) => {
+				if (event.target === reportModal) closeReportModal();
+			});
+
+			confirmCancelBtn.addEventListener("click", closeConfirmDelete);
+			confirmCloseBtn.addEventListener("click", closeConfirmDelete);
+			confirmModal.addEventListener("click", (event) => {
+				if (event.target === confirmModal) closeConfirmDelete();
+			});
+			confirmDeleteBtn.addEventListener("click", () => {
+				if (!pendingDeleteId) {
+					closeConfirmDelete();
+					return;
+				}
+				const orders = getOrders();
+				const orderToDelete = orders.find((item) => item.id === pendingDeleteId);
+				const updated = orders.filter((item) => item.id !== pendingDeleteId);
+				saveOrders(updated);
+				renderOrders();
+				closeConfirmDelete();
+				if (orderToDelete) showUndoToast(orderToDelete);
+			});
+			undoBtn.addEventListener("click", handleUndoDelete);
+			
+			const searchInput = document.getElementById("searchInput");
+			searchInput.addEventListener("input", (event) => {
+				filterOrders(event.target.value);
+			});
+
+			importInput.addEventListener("change", (event) => {
+				const file = event.target.files[0];
+				if (file) {
+					importJson(file);
+					importInput.value = "";
+				}
+			});
+
+			orderForm.addEventListener("submit", (event) => {
+				event.preventDefault();
+				const orders = getOrders();
+				const order = collectForm();
+				const existingIndex = orders.findIndex((item) => item.id === order.id);
+
+				if (existingIndex >= 0) {
+					orders[existingIndex] = order;
+				} else {
+					orders.unshift(order);
+				}
+
+				saveOrders(orders);
+				renderOrders();
+				closeModal();
+			});
+
+			orderForm.addEventListener("input", (event) => {
+				const targetId = event.target.id;
+				if (["notas", "enviarA", "facturarA", "productos", "distribuidor"].includes(targetId)) {
+					autoResize(event.target);
+					return;
+				}
+				if (["cantidad", "unitario", "descuento", "subtotal", "impuestos", "envio"].includes(targetId)) {
+					updatePreview();
+				}
+			});
+
+			ordersBody.addEventListener("click", (event) => {
+				const editId = event.target.getAttribute("data-edit");
+				const deleteId = event.target.getAttribute("data-delete");
+				const orders = getOrders();
+
+				if (editId) {
+					const order = orders.find((item) => item.id === editId);
+					if (order) {
+						fillForm(order);
+						openModal("Editar Pedido");
+					}
+				}
+
+				if (deleteId) {
+					const orderToDelete = orders.find((item) => item.id === deleteId);
+					openConfirmDelete(orderToDelete);
+				}
+			});
+		};
+
+		document.addEventListener("DOMContentLoaded", onReady);
+
+		window.addEventListener("storage", (event) => {
+			if (event.key === "orders-parches") {
+				renderOrders();
+			}
+		});
+
+		let lastCheck = JSON.stringify(getOrders());
+		setInterval(() => {
+			const current = JSON.stringify(getOrders());
+			if (current !== lastCheck) {
+				lastCheck = current;
+				renderOrders();
+			}
+		}, 15000);
+	</script>
+</body>
+</html>

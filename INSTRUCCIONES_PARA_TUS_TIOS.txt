@@ -1,0 +1,144 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    PARCHES Y COSTURA - GUÍA RÁPIDA PARA TÍOS                   ║
+║                                                                                ║
+║                              (¡SÚPER FÁCIL!)                                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+─────────────────────────────────────────────────────────────────────────────
+PASO 1: DESCARGAR EL ARCHIVO
+─────────────────────────────────────────────────────────────────────────────
+
+1. Descarga el archivo "parches.html" desde el email/WhatsApp que te envió Nacho
+2. Guárdalo en una carpeta (en el Escritorio está bien)
+
+¡ESO ES TODO! No necesitas nada más.
+
+
+─────────────────────────────────────────────────────────────────────────────
+PASO 2: ABRIR LA APLICACIÓN
+─────────────────────────────────────────────────────────────────────────────
+
+Opción A (Más fácil):
+  → Haz DOBLE CLIC en el archivo "parches.html"
+  → Se abre automáticamente en tu navegador (Chrome, Firefox, Edge, etc.)
+
+Opción B (Si no funciona):
+  → Click derecho en "parches.html"
+  → Selecciona "Abrir con" → Elige tu navegador favorito
+
+
+─────────────────────────────────────────────────────────────────────────────
+PASO 3: USAR LA APLICACIÓN (Muy fácil)
+─────────────────────────────────────────────────────────────────────────────
+
+AGREGAR UN PEDIDO:
+  → Click en "+ Agregar Pedido" (botón azul arriba a la derecha)
+  → Rellena los datos
+  → Click en "Guardar Pedido"
+
+BUSCAR PEDIDOS:
+  → Usa el cuadro de búsqueda para encontrar un cliente, región, estado, etc.
+  → Escribe mientras escribes, se filtra automático
+
+EDITAR UN PEDIDO:
+  → Busca la fila en la tabla
+  → Click en botón "Editar" (al final de la fila)
+  → Modifica lo que necesites
+  → Click "Guardar Pedido"
+
+ELIMINAR UN PEDIDO:
+  → Click en botón "Eliminar" en la fila
+  → Confirma la eliminación
+  → (Si te equivocas, hay un botón "Deshacer" abajo)
+
+DESCARGAR REPORTE EN PDF:
+  → Click en "Descargar Reporte" (botón gris)
+  → Selecciona los pedidos que quieres en el reporte
+  → Usa "Marcar todo" para seleccionar todos los que aparecen
+  → Click "Descargar Reporte"
+  → Se descarga el PDF
+
+
+─────────────────────────────────────────────────────────────────────────────
+PASO 4: GUARDAR UN RESPALDO (SUPER IMPORTANTE)
+─────────────────────────────────────────────────────────────────────────────
+
+¿QUÉ ES UN RESPALDO?
+  Es una copia de todos tus pedidos guardada en tu computador, para que no 
+  pierdas los datos si algo sale mal.
+
+CÓMO GUARDARLO:
+  → Click en "Descargar Respaldo" (botón gris en la esquina superior)
+  → Se descarga automáticamente un archivo "respaldo-parche.json"
+  → Guárdalo en una carpeta segura (Documentos, Escritorio, etc.)
+
+CUÁNDO HACERLO:
+  → Después de agregar varios pedidos nuevos
+  → Una vez por semana, como mínimo
+  → Antes de cambiar de computador
+
+CÓMO RECUPERAR UN RESPALDO:
+  → Click en "Cargar Respaldo" (botón gris)
+  → Selecciona el archivo "respaldo-parche.json" que guardaste antes
+  → Se cargan automáticamente todos tus pedidos
+  → Verás un mensaje confirmando cuántos pedidos se importaron
+
+
+─────────────────────────────────────────────────────────────────────────────
+PASO 5: PREGUNTAS FRECUENTES
+─────────────────────────────────────────────────────────────────────────────
+
+P: ¿Dónde se guardan mis datos?
+R: En tu computador. No necesitas Internet. Todo está seguro en tu máquina.
+
+P: ¿Qué pasa si apago el computador?
+R: Los datos se mantienen. Cuando abres de nuevo la aplicación, están allí.
+
+P: ¿Puedo compartir mi archivo con otro tío?
+R: Sí, comparte el archivo "parches.html". Cada uno tendrá sus propios datos 
+   en su computador (no se sincronizan entre computadores).
+
+P: ¿Si me equivoco al agregar un pedido?
+R: Usa "Editar" para modificarlo, o "Eliminar" para borrarlo. Hay un botón 
+   "Deshacer" si lo eliminas por error.
+
+P: ¿Las tablas se ven bien en el celular?
+R: Sí, ahora está optimizado para celular. Puedes ver los pedidos en tu iPhone 
+   o Android sin problema.
+
+P: ¿Qué hago si se me pierde el respaldo?
+R: No hay mucho que hacer. Por eso es importante guardar respaldos regularmente.
+   Guarda uno cada semana en un lugar seguro.
+
+P: ¿Puedo imprimir los reportes?
+R: Sí, descarga el PDF y luego imprímelo desde tu aplicación PDF.
+
+
+─────────────────────────────────────────────────────────────────────────────
+OPCIONES ADICIONALES (Para los que quieren más)
+─────────────────────────────────────────────────────────────────────────────
+
+"Agregar Pruebas": Agrega 12 pedidos de ejemplo para ver cómo funciona. 
+                   Puedes eliminarlos después.
+
+"Cargar PDF": Carga un PDF con datos de pedidos (función avanzada).
+
+"Descargar Formato": Descarga una plantilla PDF para rellenar a mano.
+
+
+─────────────────────────────────────────────────────────────────────────────
+¿ALGO NO FUNCIONA? ¡AYUDA!
+─────────────────────────────────────────────────────────────────────────────
+
+1. Prueba abrir el archivo en otro navegador (Chrome, Firefox, Edge, Safari)
+2. Limpia el caché del navegador y recarga (Ctrl+F5)
+3. Contacta a Nacho si algo no sale bien
+
+¡ESO ES! ¡Disfruta usando la aplicación! 
+
+Si tienes preguntas, Nacho te ayuda. 
+
+═══════════════════════════════════════════════════════════════════════════════
+Creado: 11 de febrero de 2026
+Aplicación: Parches y Costura v1.0
+═══════════════════════════════════════════════════════════════════════════════
