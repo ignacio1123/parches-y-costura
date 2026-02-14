@@ -740,11 +740,25 @@ const parsePdfText = (text) => {
 		.filter(Boolean)
 		.join("\n");
 
+	// Detectar tipo de cliente según si tiene campo Rango
+	const rangoMatch = text.match(/Rango[:\s]*(\S.+?)(?=\n|Región|Comuna|$)/i);
+	let detectedTipoCliente = "tienda";
+	let detectedRango = "N/A";
+	
+	if (rangoMatch) {
+		const rangoValue = rangoMatch[1].trim();
+		// Si tiene rango y no es N/A o vacío, es individual
+		if (rangoValue && rangoValue.toLowerCase() !== "n/a" && rangoValue !== "_____") {
+			detectedTipoCliente = "individual";
+			detectedRango = rangoValue;
+		}
+	}
+
 	return {
 		cliente,
 		fecha,
-		tipoCliente: "tienda", // Los PDFs de Verde Legion son siempre tienda
-		rango: "N/A",
+		tipoCliente: detectedTipoCliente,
+		rango: detectedRango,
 		enviarA,
 		facturarA,
 		productos,
