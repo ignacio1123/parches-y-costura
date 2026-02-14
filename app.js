@@ -868,12 +868,12 @@ const descargarFormato = () => {
 	doc.setFontSize(24);
 	doc.setFont("helvetica", "bold");
 	doc.setTextColor(255, 255, 255);
-	doc.text("🧵 Parches y Costuras", margin, yPos + 10);
+	doc.text("Parches y Costuras", margin, yPos + 10);
 	
 	// Subtítulo
 	doc.setFontSize(11);
 	doc.setFont("helvetica", "normal");
-	const tipoFormato = formato === 'tienda' ? '🏪 FORMATO TIENDA' : '👤 FORMATO INDIVIDUAL';
+	const tipoFormato = formato === 'tienda' ? 'FORMATO TIENDA' : 'FORMATO INDIVIDUAL';
 	doc.text(tipoFormato, margin, yPos + 18);
 	
 	doc.setFontSize(9);
@@ -888,7 +888,7 @@ const descargarFormato = () => {
 	const labelWidth = 50;
 	
 	// Función para dibujar sección con encabezado destacado
-	const drawSectionHeader = (title, icon = "") => {
+	const drawSectionHeader = (title) => {
 		if (yPos > pageHeight - 40) {
 			doc.addPage();
 			yPos = margin;
@@ -901,7 +901,7 @@ const descargarFormato = () => {
 		doc.setFontSize(11);
 		doc.setFont("helvetica", "bold");
 		doc.setTextColor(52, 73, 94);
-		doc.text(`${icon} ${title}`, margin + 3, yPos + 6);
+doc.text(`${title}`, margin + 3, yPos + 6);
 		
 		doc.setTextColor(0, 0, 0);
 		yPos += 12;
@@ -932,7 +932,7 @@ const descargarFormato = () => {
 	};
 	
 	// Información básica
-	drawSectionHeader("Información del Pedido", "📋");
+	drawSectionHeader("Información del Pedido");
 	drawField("Fecha:");
 	drawField("Cliente:");
 	
@@ -944,7 +944,7 @@ const descargarFormato = () => {
 	yPos += 2;
 	
 	// Dirección
-	drawSectionHeader("Dirección de Envío", "📍");
+	drawSectionHeader("Dirección de Envío");
 	drawField("Enviar a:", 2);
 	
 	if (formato === 'tienda') {
@@ -960,7 +960,7 @@ const descargarFormato = () => {
 	yPos += 2;
 	
 	// Información financiera
-	drawSectionHeader("Información Financiera", "💰");
+	drawSectionHeader("Información Financiera");
 	drawField("Precio Unitario:");
 	drawField("Descuento (%):");
 	drawField("Impuestos:");
@@ -968,7 +968,7 @@ const descargarFormato = () => {
 	yPos += 2;
 	
 	// Información adicional
-	drawSectionHeader("Información Adicional", "📝");
+	drawSectionHeader("Información Adicional");
 	drawField("Llegada Estimada:");
 	drawField("Estado:");
 	drawField("Notas:", 2);
