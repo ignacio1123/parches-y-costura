@@ -855,64 +855,84 @@ const descargarFormato = () => {
 	const doc = new jsPDF();
 	const formato = document.getElementById("formatoPdf").value;
 	
-	// Configuración
 	const pageWidth = doc.internal.pageSize.getWidth();
 	const pageHeight = doc.internal.pageSize.getHeight();
 	const margin = 15;
 	let yPos = margin;
 	
-	// Encabezado
-	doc.setFontSize(18);
-	doc.setFont("helvetica", "bold");
-	doc.text("Parches y Costuras", margin, yPos);
-	yPos += 7;
+	// Encabezado con fondo de color
+	doc.setFillColor(41, 128, 185); // Azul profesional
+	doc.rect(0, 0, pageWidth, 35, 'F');
 	
-	doc.setFontSize(12);
+	// Título principal
+	doc.setFontSize(24);
+	doc.setFont("helvetica", "bold");
+	doc.setTextColor(255, 255, 255);
+	doc.text("🧵 Parches y Costuras", margin, yPos + 10);
+	
+	// Subtítulo
+	doc.setFontSize(11);
 	doc.setFont("helvetica", "normal");
-	const tipoFormato = formato === 'tienda' ? 'FORMATO TIENDA' : 'FORMATO INDIVIDUAL';
-	doc.text(tipoFormato, margin, yPos);
-	yPos += 5;
+	const tipoFormato = formato === 'tienda' ? '🏪 FORMATO TIENDA' : '👤 FORMATO INDIVIDUAL';
+	doc.text(tipoFormato, margin, yPos + 18);
 	
 	doc.setFontSize(9);
-	doc.setTextColor(100, 100, 100);
-	doc.text("Complete este formulario y envíelo para registrar el pedido", margin, yPos);
-	yPos += 10;
+	doc.text("Complete este formulario y envíelo para registrar el pedido", margin, yPos + 26);
 	
-	// Resetear color
+	yPos = 45;
+	
 	doc.setTextColor(0, 0, 0);
 	doc.setFontSize(10);
 	
-	// Campos del formulario
-	const lineHeight = 8;
-	const labelWidth = 40;
+	const lineHeight = 10;
+	const labelWidth = 50;
 	
-	// Función helper para dibujar campo
+	// Función para dibujar sección con encabezado destacado
+	const drawSectionHeader = (title, icon = "") => {
+		if (yPos > pageHeight - 40) {
+			doc.addPage();
+			yPos = margin;
+		}
+		
+		doc.setFillColor(236, 240, 241); // Gris claro
+		doc.setDrawColor(189, 195, 199);
+		doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 8, 2, 2, 'FD');
+		
+		doc.setFontSize(11);
+		doc.setFont("helvetica", "bold");
+		doc.setTextColor(52, 73, 94);
+		doc.text(`${icon} ${title}`, margin + 3, yPos + 6);
+		
+		doc.setTextColor(0, 0, 0);
+		yPos += 12;
+	};
+	
+	// Función para dibujar campo con caja
 	const drawField = (label, lines = 1) => {
 		if (yPos > pageHeight - 30) {
 			doc.addPage();
 			yPos = margin;
 		}
 		
+		doc.setFontSize(9);
 		doc.setFont("helvetica", "bold");
-		doc.text(label, margin, yPos);
+		doc.setTextColor(70, 70, 70);
+		doc.text(label, margin + 2, yPos + 4);
+		
+		const boxHeight = 6 + (lines - 1) * lineHeight;
+		const boxWidth = pageWidth - 2 * margin - labelWidth;
+		
+		doc.setDrawColor(189, 195, 199);
+		doc.setFillColor(255, 255, 255);
+		doc.roundedRect(margin + labelWidth, yPos, boxWidth, boxHeight, 1, 1, 'D');
+		
+		doc.setTextColor(0, 0, 0);
 		doc.setFont("helvetica", "normal");
-		
-		const fieldWidth = pageWidth - 2 * margin - labelWidth;
-		for (let i = 0; i < lines; i++) {
-			doc.setDrawColor(200, 200, 200);
-			doc.line(margin + labelWidth, yPos - 2 + (i * lineHeight), margin + labelWidth + fieldWidth, yPos - 2 + (i * lineHeight));
-		}
-		
-		yPos += lineHeight * lines + 2;
+		yPos += boxHeight + 4;
 	};
 	
 	// Información básica
-	doc.setFontSize(11);
-	doc.setFont("helvetica", "bold");
-	doc.text("Información del Pedido", margin, yPos);
-	yPos += 7;
-	doc.setFontSize(10);
-	
+	drawSectionHeader("Información del Pedido", "📋");
 	drawField("Fecha:");
 	drawField("Cliente:");
 	
@@ -921,71 +941,59 @@ const descargarFormato = () => {
 	}
 	
 	drawField("Región/Comuna:");
-	yPos += 3;
+	yPos += 2;
 	
 	// Dirección
-	doc.setFontSize(11);
-	doc.setFont("helvetica", "bold");
-	doc.text("Dirección de Envío", margin, yPos);
-	yPos += 7;
-	doc.setFontSize(10);
-	
+	drawSectionHeader("Dirección de Envío", "📍");
 	drawField("Enviar a:", 2);
 	
 	if (formato === 'tienda') {
 		drawField("Facturar a:", 2);
 		drawField("Distribuidor:", 2);
 	}
-	
-	yPos += 3;
+	yPos += 2;
 	
 	// Productos
-	doc.setFontSize(11);
-	doc.setFont("helvetica", "bold");
-	doc.text("Productos", margin, yPos);
-	yPos += 7;
-	doc.setFontSize(10);
-	
+	drawSectionHeader("Productos", "🛍️");
 	drawField("Productos:", 3);
 	drawField("Cantidad:");
-	yPos += 3;
+	yPos += 2;
 	
 	// Información financiera
-	doc.setFontSize(11);
-	doc.setFont("helvetica", "bold");
-	doc.text("Información Financiera", margin, yPos);
-	yPos += 7;
-	doc.setFontSize(10);
-	
+	drawSectionHeader("Información Financiera", "💰");
 	drawField("Precio Unitario:");
 	drawField("Descuento (%):");
 	drawField("Impuestos:");
 	drawField("Envío:");
-	yPos += 3;
+	yPos += 2;
 	
 	// Información adicional
-	doc.setFontSize(11);
-	doc.setFont("helvetica", "bold");
-	doc.text("Información Adicional", margin, yPos);
-	yPos += 7;
-	doc.setFontSize(10);
-	
+	drawSectionHeader("Información Adicional", "📝");
 	drawField("Llegada Estimada:");
 	drawField("Estado:");
 	drawField("Notas:", 2);
 	
-	// Pie de página
+	// Pie de página con diseño
+	doc.setDrawColor(189, 195, 199);
+	doc.line(margin, pageHeight - 20, pageWidth - margin, pageHeight - 20);
+	
 	doc.setFontSize(8);
-	doc.setTextColor(150, 150, 150);
+	doc.setTextColor(127, 140, 141);
 	const today = new Date().toLocaleDateString('es-CL', { 
 		year: 'numeric', 
 		month: 'long', 
 		day: 'numeric' 
 	});
 	doc.text(
-		`Formato generado el ${today}`,
+		`📅 Formato generado el ${today}`,
 		pageWidth / 2,
-		pageHeight - 10,
+		pageHeight - 12,
+		{ align: 'center' }
+	);
+	doc.text(
+		"Parches y Costuras - Sistema de Gestión de Pedidos",
+		pageWidth / 2,
+		pageHeight - 7,
 		{ align: 'center' }
 	);
 	
