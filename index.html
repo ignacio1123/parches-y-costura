@@ -1955,6 +1955,234 @@
 			return today.toISOString().slice(0, 10);
 		};
 
+		const monthMap = {
+			enero: "01",
+			febrero: "02",
+			marzo: "03",
+			abril: "04",
+			mayo: "05",
+			junio: "06",
+			julio: "07",
+			agosto: "08",
+			septiembre: "09",
+			setiembre: "09",
+			octubre: "10",
+			noviembre: "11",
+			diciembre: "12",
+		};
+
+		const parseSpanishDate = (text) => {
+			const match = text.match(/(\d{1,2})\s+de\s+([a-zA-Z]+)\s+de\s+(\d{4})/i);
+			if (!match) return "";
+			const day = match[1].padStart(2, "0");
+			const monthName = match[2].toLowerCase();
+			const month = monthMap[monthName];
+			if (!month) return "";
+			return `${match[3]}-${month}-${day}`;
+		};
+
+		const cleanNumber = (value) => Number(String(value).replace(/\./g, ""));
+
+		const extractBetween = (text, start, endOptions, preserveLines = false) => {
+			const lower = text.toLowerCase();
+			const startIndex = lower.indexOf(start.toLowerCase());
+			if (startIndex < 0) return "";
+			const afterStart = text.slice(startIndex + start.length);
+			const lowerAfter = afterStart.toLowerCase();
+			let endIndex = -1;
+			endOptions.forEach((end) => {
+				const idx = lowerAfter.indexOf(end.toLowerCase());
+				if (idx >= 0 && (endIndex < 0 || idx < endIndex)) {
+					endIndex = idx;
+				}
+			});
+			const slice = endIndex >= 0 ? afterStart.slice(0, endIndex) : afterStart;
+			
+			if (preserveLines) {
+				return slice
+					.split(/\n/)
+					.map(line => line.trim())
+					.filter(line => line.length > 0)
+					.join("\n");
+			}
+			
+			return slice.replace(/\s+/g, " ").trim();
+		};
+
+		const cleanFragmentedText = (text) => {
+			return text
+				.replace(/Subo?\s*fi\s*cial/gi, "Suboficial")
+				.replace(/N\s*u\s*ñ\s*o\s*a/gi, "Ñuñoa")
+				.replace(/(\w)\s+(\w)(?=\s+[A-Z])/g, "$1$2")
+				.trim();
+		};
+
+		const parsePdfText = (text) => {
+			const headerMatch = text.match(/DISTRIBUIDOR\s+ENVIAR A\s+FACTURAR A/i);
+			let distribuidor = "";
+			let enviarA = "";
+			let facturarA = "";
+			let cliente = "";
+			let fecha = "";
+			
+			if (headerMatch) {
+				const afterHeader = text.substring(headerMatch.index + headerMatch[0].length).trim();
+				const lines = afterHeader.split("\n")
+					.map(line => line.trim())
+					.filter(line => line.length > 0 && 
+						!line.match(/^(CONDICIONES|MONEDA|LLEGADA|PRODUCTOS|SKU)/i));
+				
+				if (lines.length >= 10) {
+					distribuidor = cleanFragmentedText(lines.slice(0, 3).join("\n"));
+					enviarA = cleanFragmentedText(lines.slice(3, 6).join("\n"));
+					facturarA = cleanFragmentedText(lines.slice(6, 10).join("\n"));
+					cliente = cleanFragmentedText(lines[6]);
+				}
+			}
+			
+			const fechaMatch = text.match(/(\d{1,2}\s+de\s+\w+\s+de\s+\d{4})/i);
+			if (fechaMatch) {
+				fecha = parseSpanishDate(fechaMatch[1]);
+			}
+
+			const referenciaMatch = text.match(/NUMERO DE REFERENCIA\s+([A-Z0-9]+)/i);
+			const referencia = referenciaMatch ? referenciaMatch[1] : "";
+
+			const items = [];
+			const nameMatches = text.match(/Parche[^\d]{0,120}/gi) || [];
+			nameMatches.forEach((item) => {
+				const clean = item.replace(/\s+/g, " ").trim();
+				if (!items.includes(clean)) {
+					items.push(clean);
+				}
+			});
+
+			let cantidadTotal = 0;
+			let totalAcumulado = 0;
+			const rowRegex = /(\d+)\s+(\d{1,3}(?:\.\d{3})+)\s*\$?\s*0%\s*(\d{1,3}(?:\.\d{3})+)/g;
+			let match;
+			while ((match = rowRegex.exec(text)) !== null) {
+				const qty = Number(match[1]);
+				const lineTotal = cleanNumber(match[3]);
+				cantidadTotal += qty;
+				totalAcumulado += lineTotal;
+			}
+
+			if (!totalAcumulado) {
+				const totalMatch = text.match(/Total\s+([\d.]+)\s*\$/i);
+				if (totalMatch) {
+					totalAcumulado = cleanNumber(totalMatch[1]);
+				}
+			}
+
+			let unitario = cantidadTotal
+				? Math.round(totalAcumulado / cantidadTotal)
+				: 0;
+
+			const productos = items.length ? items.join("\n") : "";
+
+			const impuestosMatch = text.match(/Impuestos\s*\(incluidos\)\s*([\d.]+)\s*\$/i);
+			const impuestos = impuestosMatch ? cleanNumber(impuestosMatch[1]) : 0;
+			const envioMatch = text.match(/Envio\s*([\d.]+)\s*\$/i);
+			const envio = envioMatch ? cleanNumber(envioMatch[1]) : 0;
+			const subtotalMatch = text.match(/Subtotal[^\d]*([\d.]+)\s*\$/i);
+			const subtotal = subtotalMatch ? cleanNumber(subtotalMatch[1]) : 0;
+			if (subtotal > 0 && cantidadTotal > 0) {
+				unitario = Math.round(subtotal / cantidadTotal);
+			}
+
+			const condicionRaw = extractBetween(text, "CONDICIONES DE PAGO", [
+				"MONEDA DEL DISTRIBUIDOR",
+				"LLEGADA ESTIMADA",
+				"RESUMEN",
+				"PRODUCTOS",
+			]);
+			const condicionPago = condicionRaw.trim();
+
+			const monedaRaw = extractBetween(text, "MONEDA DEL DISTRIBUIDOR", [
+				"LLEGADA ESTIMADA",
+				"CONDICIONES DE PAGO",
+				"RESUMEN",
+				"PRODUCTOS",
+			]);
+			const moneda = monedaRaw.split(" ")[0].trim();
+
+			const llegadaRaw = extractBetween(text, "LLEGADA ESTIMADA", [
+				"CONDICIONES DE PAGO",
+				"MONEDA DEL DISTRIBUIDOR",
+				"RESUMEN",
+				"PRODUCTOS",
+			]);
+			const llegadaEstimada = parseSpanishDate(llegadaRaw);
+
+			const notas = [
+				referencia ? `Referencia: ${referencia}` : "",
+				items.length ? `Items: ${items.join(" | ")}` : "",
+			]
+				.filter(Boolean)
+				.join("\n");
+
+			return {
+				cliente,
+				fecha,
+				tipoCliente: "tienda",
+				rango: "N/A",
+				enviarA,
+				facturarA,
+				productos,
+				cantidad: cantidadTotal || 1,
+				unitario,
+				subtotal,
+				impuestos,
+				envio,
+				moneda,
+				condicionPago,
+				llegadaEstimada,
+				distribuidor,
+				notas,
+			};
+		};
+
+		const extractPdfText = async (file) => {
+			if (typeof pdfjsLib === 'undefined') {
+				throw new Error("PDF.js no está cargado. Por favor recarga la página.");
+			}
+			const buffer = await file.arrayBuffer();
+			const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+			let text = "";
+			
+			for (let pageIndex = 1; pageIndex <= pdf.numPages; pageIndex += 1) {
+				const page = await pdf.getPage(pageIndex);
+				const content = await page.getTextContent();
+				
+				const lines = [];
+				let currentLine = [];
+				let lastY = null;
+				
+				content.items.forEach((item) => {
+					const y = item.transform[5];
+					
+					if (lastY !== null && Math.abs(y - lastY) > 5) {
+						if (currentLine.length > 0) {
+							lines.push(currentLine.join(" "));
+							currentLine = [];
+						}
+					}
+					
+					currentLine.push(item.str);
+					lastY = y;
+				});
+				
+				if (currentLine.length > 0) {
+					lines.push(currentLine.join(" "));
+				}
+				
+				text += lines.join("\n") + "\n";
+			}
+			
+			return text.trim();
+		};
+
 		const filterOrders = (searchTerm) => {
 			if (!searchTerm || searchTerm.trim() === "") {
 				currentFilteredOrders = null;
@@ -2539,6 +2767,43 @@
 				if (file) {
 					importJson(file);
 					importInput.value = "";
+				}
+			});
+
+			pdfInput.addEventListener("change", async (event) => {
+				const file = event.target.files[0];
+				if (!file) return;
+				try {
+					const text = await extractPdfText(file);
+					const parsed = parsePdfText(text);
+					orderForm.reset();
+					fields.fecha.value = parsed.fecha || todayIso();
+					fields.cliente.value = parsed.cliente || "";
+					fields.tipoCliente.value = parsed.tipoCliente || "";
+					fields.rango.value = parsed.rango || "";
+					fields.enviarA.value = parsed.enviarA || "";
+					fields.facturarA.value = parsed.facturarA || "";
+					fields.productos.value = parsed.productos || "";
+					fields.cantidad.value = parsed.cantidad || 1;
+					fields.unitario.value = parsed.unitario || 0;
+					fields.descuento.value = 0;
+					fields.subtotal.value = parsed.subtotal || 0;
+					fields.impuestos.value = parsed.impuestos || 0;
+					fields.envio.value = parsed.envio || 0;
+					fields.estado.value = "Pendiente";
+					fields.condicionPago.value = parsed.condicionPago || "Ninguna";
+					fields.moneda.value = parsed.moneda || "CLP";
+					fields.llegadaEstimada.value = parsed.llegadaEstimada || "";
+					fields.distribuidor.value = parsed.distribuidor || "";
+					fields.notas.value = parsed.notas || "";
+					openModal("Nuevo pedido desde PDF");
+					updatePreview();
+					autoResizeAll();
+				} catch (error) {
+					console.error("Error al leer PDF:", error);
+					alert(`No se pudo leer el PDF: ${error.message}\n\nPuedes completar el formulario manualmente.`);
+				} finally {
+					pdfInput.value = "";
 				}
 			});
 
