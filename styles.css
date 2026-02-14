@@ -572,12 +572,20 @@ tbody tr:hover {
 	background: #f5f5f5;
 	color: var(--ink);
 	border: 1px solid var(--line);
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .btn-ghost {
 	background: transparent;
 	border: 1px solid var(--line);
 	color: var(--muted);
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .btn-sm {
