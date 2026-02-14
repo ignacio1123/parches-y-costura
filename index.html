@@ -2225,6 +2225,138 @@
 			renderOrders(filtered);
 		};
 
+		const descargarFormato = () => {
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF();
+			const formato = document.getElementById("formatoPdf").value;
+			
+			const pageWidth = doc.internal.pageSize.getWidth();
+			const pageHeight = doc.internal.pageSize.getHeight();
+			const margin = 15;
+			let yPos = margin;
+			
+			doc.setFontSize(18);
+			doc.setFont("helvetica", "bold");
+			doc.text("Parches y Costuras", margin, yPos);
+			yPos += 7;
+			
+			doc.setFontSize(12);
+			doc.setFont("helvetica", "normal");
+			const tipoFormato = formato === 'tienda' ? 'FORMATO TIENDA' : 'FORMATO INDIVIDUAL';
+			doc.text(tipoFormato, margin, yPos);
+			yPos += 5;
+			
+			doc.setFontSize(9);
+			doc.setTextColor(100, 100, 100);
+			doc.text("Complete este formulario y envíelo para registrar el pedido", margin, yPos);
+			yPos += 10;
+			
+			doc.setTextColor(0, 0, 0);
+			doc.setFontSize(10);
+			
+			const lineHeight = 8;
+			const labelWidth = 40;
+			
+			const drawField = (label, lines = 1) => {
+				if (yPos > pageHeight - 30) {
+					doc.addPage();
+					yPos = margin;
+				}
+				
+				doc.setFont("helvetica", "bold");
+				doc.text(label, margin, yPos);
+				doc.setFont("helvetica", "normal");
+				
+				const fieldWidth = pageWidth - 2 * margin - labelWidth;
+				for (let i = 0; i < lines; i++) {
+					doc.setDrawColor(200, 200, 200);
+					doc.line(margin + labelWidth, yPos - 2 + (i * lineHeight), margin + labelWidth + fieldWidth, yPos - 2 + (i * lineHeight));
+				}
+				
+				yPos += lineHeight * lines + 2;
+			};
+			
+			doc.setFontSize(11);
+			doc.setFont("helvetica", "bold");
+			doc.text("Información del Pedido", margin, yPos);
+			yPos += 7;
+			doc.setFontSize(10);
+			
+			drawField("Fecha:");
+			drawField("Cliente:");
+			
+			if (formato === 'individual') {
+				drawField("Rango:");
+			}
+			
+			drawField("Región/Comuna:");
+			yPos += 3;
+			
+			doc.setFontSize(11);
+			doc.setFont("helvetica", "bold");
+			doc.text("Dirección de Envío", margin, yPos);
+			yPos += 7;
+			doc.setFontSize(10);
+			
+			drawField("Enviar a:", 2);
+			
+			if (formato === 'tienda') {
+				drawField("Facturar a:", 2);
+				drawField("Distribuidor:", 2);
+			}
+			
+			yPos += 3;
+			
+			doc.setFontSize(11);
+			doc.setFont("helvetica", "bold");
+			doc.text("Productos", margin, yPos);
+			yPos += 7;
+			doc.setFontSize(10);
+			
+			drawField("Productos:", 3);
+			drawField("Cantidad:");
+			yPos += 3;
+			
+			doc.setFontSize(11);
+			doc.setFont("helvetica", "bold");
+			doc.text("Información Financiera", margin, yPos);
+			yPos += 7;
+			doc.setFontSize(10);
+			
+			drawField("Precio Unitario:");
+			drawField("Descuento (%):");
+			drawField("Impuestos:");
+			drawField("Envío:");
+			yPos += 3;
+			
+			doc.setFontSize(11);
+			doc.setFont("helvetica", "bold");
+			doc.text("Información Adicional", margin, yPos);
+			yPos += 7;
+			doc.setFontSize(10);
+			
+			drawField("Llegada Estimada:");
+			drawField("Estado:");
+			drawField("Notas:", 2);
+			
+			doc.setFontSize(8);
+			doc.setTextColor(150, 150, 150);
+			const today = new Date().toLocaleDateString('es-CL', { 
+				year: 'numeric', 
+				month: 'long', 
+				day: 'numeric' 
+			});
+			doc.text(
+				`Formato generado el ${today}`,
+				pageWidth / 2,
+				pageHeight - 10,
+				{ align: 'center' }
+			);
+			
+			const nombreArchivo = `Formato-${formato === 'tienda' ? 'Tienda' : 'Individual'}-${new Date().toISOString().slice(0, 10)}.pdf`;
+			doc.save(nombreArchivo);
+		};
+
 		const renderReportRecordsList = () => {
 			const recordsList = document.getElementById("reportRecordsList");
 			recordsList.innerHTML = "";
