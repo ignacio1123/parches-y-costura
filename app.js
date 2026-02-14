@@ -1387,8 +1387,12 @@ const exportPdf = (ordersToExport = null, columnsToShow = null) => {
 		);
 	}
 	
-	// Guardar
-	doc.save(`Reporte-Pedidos-${new Date().toISOString().slice(0, 10)}.pdf`);
+	// Guardar con nombre descriptivo que incluye cantidad de pedidos y hora
+	const now = new Date();
+	const fecha = now.toLocaleDateString('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ /g, '-');
+	const hora = `${now.getHours()}h${String(now.getMinutes()).padStart(2, '0')}`;
+	const cantidadPedidos = orders.length;
+	doc.save(`Reporte-${cantidadPedidos}pedidos-${fecha}-${hora}.pdf`);
 };
 
 const onReady = () => {
