@@ -535,6 +535,11 @@ tbody tr:hover {
 	justify-content: flex-start;
 }
 
+.actions .btn {
+	min-width: 70px;
+	text-align: center;
+}
+
 .actions-cell {
 	white-space: normal;
 }
